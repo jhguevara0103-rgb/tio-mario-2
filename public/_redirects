@@ -1,0 +1,10 @@
+# ==============================================================================
+# NETLIFY REDIRECTS CONFIGURATION (Vite SPA)
+# ==============================================================================
+
+# 1. Panel de Administración de Anfitrión (Acceso directo y recargas de subrutas)
+/admin       /admin.html   200
+/admin/*     /admin.html   200
+
+# 2. Regla comodín SPA general para la vista de cliente / index
+/*           /index.html   200
