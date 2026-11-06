@@ -1,0 +1,41 @@
+# ==============================================================================
+# NETLIFY CONFIGURATION FILE (netlify.toml)
+# ==============================================================================
+
+[build]
+  publish = "dist"
+  command = "npm run build"
+
+# ------------------------------------------------------------------------------
+# REGLAS DE REDIRECCIÓN (Evita errores 404 al recargar /admin o subrutas SPA)
+# ------------------------------------------------------------------------------
+
+# Panel de Administración de Anfitrión
+[[redirects]]
+  from = "/admin"
+  to = "/admin.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin/*"
+  to = "/admin.html"
+  status = 200
+
+# Enrutador comodín SPA general para la vista de usuario / cliente
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# ------------------------------------------------------------------------------
+# CABECERAS DE SEGURIDAD Y PERMISOS MULTIMEDIA (Cámara, Micrófono, Captura)
+# ------------------------------------------------------------------------------
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    # Habilitación de APIs de dispositivos locales (cámara, micrófono, captura de pantalla WebRTC)
+    Permissions-Policy = "camera=*, microphone=*, display-capture=*, clipboard-read=*, clipboard-write=*"

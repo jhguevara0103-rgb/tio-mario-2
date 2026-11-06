@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0a0e12">
+  <title>Ludito Live</title>
+  <meta name="description" content="Plataforma web en tiempo real con vista de participante, panel de control de host, VAR en vivo, chat interactivo con voz y gestión de pedidos." />
+  <meta property="og:title" content="Ludito Live" />
+  <meta property="og:description" content="Plataforma web en tiempo real con vista de participante, panel de control de host, VAR en vivo, chat interactivo con voz y gestión de pedidos." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="stylesheet" href="./client.css">
+  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./chat.css">
+  <link rel="stylesheet" href="./volume-nav.css">
+  <script type="module" src="./shared.js"></script>
+  <script type="module" src="./webrtc.js"></script>
+  <script type="module" src="./script.js"></script>
+</head>
+<body class="client-page">
+  <main class="client-app">
+    <header class="client-header">
+      <a class="client-wordmark" href="./" aria-label="El Tio Mario"><img src="./assets/aistudio/titulo_8c4f5fbe.png" alt="El Tio Mario" class="brand-logo-img"></a>
+      <div class="client-header-actions">
+        <span class="client-viewers-badge" id="client-viewers-badge" title="Espectadores en el live">
+          <span class="viewers-icon">👥</span> <strong id="client-viewers-count">0</strong> <span class="viewers-label">espectadores</span>
+        </span>
+        <span class="client-identity-tag" id="client-identity-tag" title="Tu estado en el chat">
+          <span class="identity-dot"></span> <span id="client-identity-text">Invitado</span>
+        </span>
+      </div>
+    </header>
+
+    <section class="client-video-section" aria-label="Transmisión en vivo">
+      <div class="stream-anchor-placeholder" id="stream-anchor-placeholder" hidden></div>
+      <div class="stream-frame" id="stream-frame">
+        <video id="client-video" autoplay playsinline muted aria-label="Transmisión vertical en vivo"></video>
+        <div class="stream-placeholder" id="stream-placeholder">
+          <!-- Video de Fondo en Bucle para Estado Offline -->
+          <video id="client-offline-video" class="stream-offline-video" src="./assets/aistudio/gemini_generated_video_2693d122_8c2fe6da.mp4" autoplay loop muted playsinline></video>
+        </div>
+        <span class="stream-live-tag"><i></i> EN VIVO</span>
+        <span class="stream-viewers-tag" id="stream-viewers-tag" title="Espectadores conectados">
+          <span class="viewers-icon">👥</span> <strong id="stream-viewers-count">0</strong>
+        </span>
+        <div class="stream-player-tools">
+          <button class="player-pip-btn" id="player-pip-btn" type="button" title="Ventana Flotante (PiP Real fuera del navegador o en pantalla)" aria-label="Ventana Flotante">
+            <span class="pip-icon">🪟</span>
+          </button>
+          <button class="player-fullscreen-btn" id="player-fullscreen-btn" type="button" title="Pantalla Completa" aria-label="Pantalla Completa">
+            <span class="fullscreen-icon">⛶</span>
+          </button>
+        </div>
+        <div class="floating-drag-bar" id="floating-drag-bar" hidden>
+          <span class="floating-drag-handle" id="floating-drag-handle" title="Arrastra para mover">⋮⋮ 🔴 En Vivo</span>
+          <button type="button" class="floating-dock-btn" id="floating-dock-btn" title="Restaurar a posición original" aria-label="Volver a fijar">✕</button>
+        </div>
+        <button class="audio-enable-button" id="audio-enable-button" type="button" aria-label="Activar o desactivar sonido"><span class="audio-toggle-icon" id="client-audio-icon">🔇</span> <span id="client-audio-label">Activar sonido</span></button>
+      </div>
+    </section>
+
+    <section class="client-chat" id="client-chat" aria-labelledby="client-chat-title">
+      <div class="client-feed-heading">
+        <div><h2 id="client-chat-title">Chat Abierto</h2></div>
+        <div class="client-chat-tools">
+          <label class="client-volume-control" for="client-voice-volume"><span>Vol.</span><input id="client-voice-volume" type="range" min="0" max="1" step="0.1" value="1" aria-label="Volumen de voz en este dispositivo"><output id="client-voice-volume-value" for="client-voice-volume">100%</output></label>
+          <label class="client-voice-toggle"><input id="client-voice-toggle" type="checkbox"><span>Leer mensajes</span></label>
+        </div>
+      </div>
+      <div class="client-chat-list" id="client-chat-list" role="log" aria-live="polite" aria-relevant="additions"><p class="client-feed-empty" id="client-chat-empty">Todavía no hay mensajes.</p></div>
+      <div class="chat-form-container">
+        <!-- Barra de emoticones rápidos -->
+        <div class="chat-quick-emojis" id="client-quick-emojis" aria-label="Emoticones rápidos">
+          <button type="button" class="quick-emoji-chip" data-emoji="🔥" title="Fuego">🔥</button>
+          <button type="button" class="quick-emoji-chip" data-emoji="👏" title="Aplausos">👏</button>
+          <button type="button" class="quick-emoji-chip" data-emoji="😂" title="Risa">😂</button>
+          <button type="button" class="quick-emoji-chip" data-emoji="😍" title="Me encanta">😍</button>
+          <button type="button" class="quick-emoji-chip" data-emoji="⭐" title="Estrella">⭐</button>
+          <button type="button" class="quick-emoji-chip" data-emoji="🍄" title="Hongo">🍄</button>
+          <button type="button" class="quick-emoji-chip" data-emoji="🎲" title="Dado">🎲</button>
+          <button type="button" class="quick-emoji-chip" data-emoji="🔴" title="Rojo">🔴</button>
+          <button type="button" class="quick-emoji-chip" data-emoji="🟣" title="Morado">🟣</button>
+          <button type="button" class="quick-emoji-chip" data-emoji="🟡" title="Amarillo">🟡</button>
+          <button type="button" class="quick-emoji-chip" data-emoji="🔵" title="Celeste">🔵</button>
+          <button type="button" class="quick-emoji-chip" data-emoji="🟢" title="Verde">🟢</button>
+          <button type="button" class="quick-emoji-chip" data-emoji="🟠" title="Naranja">🟠</button>
+        </div>
+        <form class="client-chat-form" id="client-chat-form">
+          <div class="chat-input-wrapper">
+            <button class="chat-emoji-toggle" id="client-chat-emoji-toggle" type="button" aria-label="Elegir emoticones" title="Emoticones">
+              <span class="emoji-toggle-icon">😀</span>
+            </button>
+            <input id="client-chat-input" type="text" maxlength="500" placeholder="Escribe un mensaje en el chat…" aria-label="Escribe un mensaje" autocomplete="off" required>
+          </div>
+          <button id="client-chat-send" type="submit" aria-label="Enviar mensaje">&rarr;</button>
+        </form>
+        <div class="chat-emoji-popover" id="client-chat-emoji-popover" hidden aria-label="Panel de emoticones"></div>
+      </div>
+    </section>
+
+    <footer class="client-footer"><span>ludito / sala de transmisión</span><span id="user-label">ACCESO PÚBLICO</span></footer>
+  </main>
+</body>
+</html>

@@ -1,0 +1,1625 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+:root {
+  color-scheme: dark;
+  --bg-base: #070b0f;
+  --bg-surface: rgba(17, 23, 31, 0.85);
+  --bg-surface-elevated: rgba(24, 32, 44, 0.92);
+  --bg-glass: rgba(15, 21, 29, 0.8);
+  --border-subtle: rgba(255, 255, 255, 0.1);
+  --border-hover: rgba(255, 255, 255, 0.24);
+  --text-main: #ffffff;
+  --text-muted: #cbd5e1;
+  --text-dim: #94a3b8;
+
+  /* Official Super Mario Typography Palette */
+  --mario-red: #e52521;
+  --mario-blue: #009fe3;
+  --mario-yellow: #fed100;
+  --mario-green: #00a844;
+  --mario-purple: #9d4edd;
+  --mario-orange: #ff6b35;
+
+  --mario-red-glow: rgba(229, 37, 33, 0.45);
+  --mario-blue-glow: rgba(0, 159, 227, 0.45);
+  --mario-yellow-glow: rgba(254, 209, 0, 0.45);
+  --mario-green-glow: rgba(0, 168, 68, 0.45);
+
+  --accent: #fed100;
+  --accent-glow: rgba(254, 209, 0, 0.4);
+  --live-red: #e52521;
+  --live-red-glow: rgba(229, 37, 33, 0.5);
+  --danger: #f87171;
+
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-display: 'Outfit', var(--font-sans);
+  --font-mono: 'DM Mono', monospace;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.6);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body.client-page, body {
+  margin: 0;
+  background-color: var(--bg-base);
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+  position: relative;
+  min-height: 100svh;
+}
+
+body.client-page::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image: 
+    linear-gradient(180deg, rgba(8, 12, 16, 0.74) 0%, rgba(8, 12, 16, 0.86) 40%, rgba(8, 12, 16, 0.96) 100%),
+    radial-gradient(circle at 50% 0%, rgba(0, 168, 68, 0.16) 0%, transparent 60%),
+    url('/assets/aistudio/descarga_5f1f4c5c.jpg');
+  background-position: center top;
+  background-size: cover;
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+
+button, input, select {
+  font: inherit;
+  color: inherit;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* Base App Layout */
+.client-app {
+  width: min(100%, 460px);
+  min-height: 100svh;
+  margin: 0 auto;
+  padding: 0 20px 32px;
+  position: relative;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+/* Header */
+.client-header {
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: 14px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Brand Logo Image and Wordmark */
+.client-wordmark {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
+}
+
+.client-wordmark:hover {
+  transform: scale(1.05);
+}
+
+.brand-logo-img {
+  height: 44px;
+  width: auto;
+  max-width: 140px;
+  object-fit: contain;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.7)) drop-shadow(0 0 10px rgba(254, 209, 0, 0.3));
+  display: block;
+}
+
+/* Super Mario Typography Wordmark */
+.mario-wordmark {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: baseline;
+  text-shadow: 0 3px 0 #000, 0 0 16px rgba(254, 209, 0, 0.3);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mario-wordmark:hover {
+  transform: scale(1.04);
+}
+
+.mario-wordmark .m-blue {
+  color: var(--mario-blue);
+  text-shadow: 0 2px 0 #000, 0 0 10px var(--mario-blue-glow);
+}
+
+.mario-wordmark .m-yellow {
+  color: var(--mario-yellow);
+  text-shadow: 0 2px 0 #000, 0 0 10px var(--mario-yellow-glow);
+}
+
+.mario-wordmark .m-red {
+  color: var(--mario-red);
+  text-shadow: 0 2px 0 #000, 0 0 10px var(--mario-red-glow);
+}
+
+.mario-wordmark .m-green {
+  color: var(--mario-green);
+  text-shadow: 0 2px 0 #000, 0 0 10px var(--mario-green-glow);
+}
+
+.mario-wordmark .m-dot {
+  color: var(--mario-yellow);
+  display: inline-block;
+  margin-left: 1px;
+  text-shadow: 0 2px 0 #000, 0 0 14px var(--mario-yellow);
+  animation: star-bounce 2s infinite ease-in-out;
+}
+
+@keyframes star-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+.client-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 1;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.client-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #fff;
+  background: rgba(229, 37, 33, 0.25);
+  border: 1px solid var(--mario-red);
+  box-shadow: 0 0 12px var(--mario-red-glow);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+}
+
+.client-live i, .stream-live-tag i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--mario-red);
+  box-shadow: 0 0 8px #fff, 0 0 14px var(--mario-red);
+  animation: beacon-pulse 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.client-viewers-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 9px;
+  border-radius: var(--radius-full);
+  background: rgba(16, 23, 33, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #e2e8f0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.client-viewers-badge .viewers-icon {
+  font-size: 12px;
+  line-height: 1;
+}
+
+.client-viewers-badge strong {
+  color: var(--mario-yellow);
+  font-weight: 800;
+  text-shadow: 0 0 8px var(--mario-yellow-glow);
+}
+
+.stream-viewers-tag {
+  position: absolute;
+  top: 14px;
+  left: 106px;
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 9px;
+  border-radius: var(--radius-full);
+  background: rgba(10, 14, 20, 0.78);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+}
+
+.stream-viewers-tag strong {
+  color: var(--mario-yellow);
+}
+
+@keyframes beacon-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+/* Botón Optimizado y Compacto de Contraseña de Participante */
+.pin-access-button {
+  height: 28px;
+  min-height: 28px;
+  max-height: 28px;
+  padding: 0 10px;
+  gap: 5px;
+  border: 1px solid rgba(254, 209, 0, 0.35);
+  border-radius: var(--radius-sm, 6px);
+  background: rgba(18, 24, 34, 0.9);
+  backdrop-filter: blur(8px);
+  color: #f8fafc;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  text-decoration: none;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  flex-shrink: 1;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.pin-access-button:hover {
+  border-color: var(--mario-yellow);
+  color: var(--mario-yellow);
+  background: rgba(28, 38, 52, 0.96);
+  box-shadow: 0 0 10px var(--mario-yellow-glow);
+  transform: translateY(-1px);
+}
+
+.pin-access-button:active {
+  transform: translateY(0) scale(0.97);
+}
+
+.pin-access-button .pin-btn-icon {
+  font-size: 11px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.pin-access-button .pin-btn-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.pin-access-button.is-authenticated {
+  border-color: rgba(0, 168, 68, 0.5);
+  background: rgba(0, 168, 68, 0.18);
+  color: #a7f3d0;
+}
+
+.pin-access-button.is-authenticated:hover {
+  border-color: var(--mario-green);
+  box-shadow: 0 0 10px var(--mario-green-glow);
+}
+
+@media (max-width: 480px) {
+  .client-app {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .client-header {
+    height: 52px;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+  .brand-logo-img {
+    height: 36px;
+    max-width: 115px;
+  }
+  .client-header-actions {
+    gap: 6px;
+  }
+  .client-viewers-badge {
+    padding: 3px 7px;
+    font-size: 10px;
+  }
+  .client-viewers-badge .viewers-label {
+    display: none;
+  }
+  .pin-access-button {
+    height: 26px;
+    min-height: 26px;
+    max-height: 26px;
+    padding: 0 8px;
+    font-size: 10px;
+    gap: 4px;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 360px) {
+  .brand-logo-img {
+    height: 30px;
+    max-width: 95px;
+  }
+  .pin-access-button {
+    padding: 0 5px;
+    font-size: 9.5px;
+    gap: 3px;
+    max-width: 100%;
+  }
+}
+
+/* Video Stream Frame - Formato Vertical Estricto 9:16 (1080x1920) */
+.client-video-section {
+  padding-top: 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stream-frame {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  aspect-ratio: 9 / 16;
+  max-height: min(72svh, 640px);
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: #000000;
+  border: 2px solid rgba(254, 209, 0, 0.3);
+  box-shadow: 0 0 28px rgba(0, 0, 0, 0.8), 0 0 16px rgba(254, 209, 0, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stream-frame video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center center;
+  background: #000000;
+}
+
+.stream-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000000;
+  color: var(--text-main);
+  padding: 0;
+  overflow: hidden;
+}
+
+/* Video de fondo limpio en bucle para Estado Offline */
+.stream-offline-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+  pointer-events: none;
+  filter: none;
+}
+
+/* Viewfinder crosshairs */
+.stream-frame::before,
+.stream-frame::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-color: rgba(254, 209, 0, 0.4);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.stream-frame::before {
+  top: 14px;
+  right: 14px;
+  border-top: 2px solid;
+  border-right: 2px solid;
+}
+
+.stream-frame::after {
+  bottom: 14px;
+  left: 14px;
+  border-bottom: 2px solid;
+  border-left: 2px solid;
+}
+
+.placeholder-mark {
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  margin-bottom: 18px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, #fed100 0%, #ff9800 100%);
+  color: #1a0f00;
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 900;
+  box-shadow: 0 8px 24px var(--mario-yellow-glow), 0 3px 0 #cc6600;
+  position: relative;
+}
+
+.placeholder-mark > span {
+  color: var(--mario-red);
+}
+
+.stream-placeholder p {
+  margin: 0 0 6px;
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.stream-placeholder small {
+  color: var(--mario-yellow);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+
+.connect-obs-button {
+  margin-top: 14px;
+  min-height: 38px;
+  padding: 0 18px;
+  border: 1px solid var(--mario-blue);
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--mario-blue) 0%, #0066cc 100%);
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px var(--mario-blue-glow), 0 2px 0 #003366;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.connect-obs-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px var(--mario-blue-glow), 0 3px 0 #002244;
+  filter: brightness(1.1);
+}
+
+.connect-obs-button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 6px var(--mario-blue-glow);
+}
+
+.stream-placeholder-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.client-stream-local-btn {
+  min-height: 38px;
+  padding: 0 18px;
+  border: 1px solid var(--mario-yellow);
+  border-radius: var(--radius-full);
+  background: rgba(254, 209, 0, 0.16);
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  box-shadow: 0 0 14px var(--mario-yellow-glow);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.client-stream-local-btn:hover {
+  background: var(--mario-yellow);
+  color: #111827;
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px var(--mario-yellow-glow);
+}
+
+.client-stream-local-btn:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.client-stream-retry {
+  min-height: 34px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-full);
+  background: rgba(18, 24, 34, 0.85);
+  color: #cbd5e1;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.client-stream-retry:hover {
+  border-color: #fff;
+  color: #fff;
+}
+
+.stream-live-tag {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 12px;
+  background: rgba(10, 14, 18, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--mario-red);
+  box-shadow: 0 0 10px var(--mario-red-glow);
+  border-radius: var(--radius-full);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #fff;
+  z-index: 3;
+}
+
+.preview-overlay {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  padding: 8px 14px;
+  border: 1px solid rgba(254, 209, 0, 0.3);
+  border-radius: var(--radius-sm);
+  background: rgba(10, 14, 18, 0.88);
+  backdrop-filter: blur(16px);
+  box-shadow: var(--shadow-md);
+  z-index: 3;
+}
+
+.preview-kicker {
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+
+.preview-kicker strong {
+  color: var(--mario-yellow);
+  font-size: 16px;
+  font-weight: 800;
+  margin-left: 3px;
+  text-shadow: 0 0 8px var(--mario-yellow-glow);
+}
+
+.audio-enable-button {
+  position: absolute;
+  z-index: 4;
+  left: 14px;
+  bottom: 16px;
+  min-height: 38px;
+  padding: 0 16px;
+  border: 1px solid var(--mario-blue);
+  border-radius: var(--radius-full);
+  background: rgba(10, 14, 18, 0.88);
+  backdrop-filter: blur(16px);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 0 14px var(--mario-blue-glow);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.audio-enable-button:hover {
+  background: rgba(0, 159, 227, 0.25);
+  border-color: #1cb5ff;
+  box-shadow: 0 0 18px var(--mario-blue-glow);
+  transform: translateY(-1px);
+}
+
+.audio-enable-button.unmuted {
+  border-color: var(--mario-green);
+  box-shadow: 0 0 14px var(--mario-green-glow);
+  background: rgba(0, 168, 68, 0.25);
+  color: #a7f3d0;
+}
+
+.audio-enable-button.unmuted:hover {
+  background: rgba(0, 168, 68, 0.4);
+  box-shadow: 0 0 18px var(--mario-green-glow);
+}
+
+.audio-toggle-icon {
+  font-size: 14px;
+  display: inline-block;
+  line-height: 1;
+}
+
+/* Herramientas de Control del Reproductor (Flotante PiP y Pantalla Completa) */
+.stream-player-tools {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 6;
+}
+
+.player-pip-btn,
+.player-fullscreen-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(10, 14, 20, 0.85);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.player-pip-btn:hover,
+.player-fullscreen-btn:hover {
+  background: rgba(254, 209, 0, 0.25);
+  border-color: var(--mario-yellow);
+  color: var(--mario-yellow);
+  transform: scale(1.08);
+  box-shadow: 0 0 12px var(--mario-yellow-glow);
+}
+
+.player-pip-btn:active,
+.player-fullscreen-btn:active {
+  transform: scale(0.96);
+}
+
+/* Espacio reservado para evitar saltos de layout cuando el reproductor flota */
+.stream-anchor-placeholder {
+  width: 100%;
+  max-width: 380px;
+  aspect-ratio: 9 / 16;
+  max-height: min(72svh, 640px);
+  margin: 0 auto;
+}
+
+/* ==========================================================================
+   Modo Reproductor Flotante Arrastrable (In-App PiP)
+   ========================================================================== */
+.stream-frame.is-floating {
+  position: fixed !important;
+  bottom: 24px;
+  right: 20px;
+  width: 165px !important;
+  height: 293px !important;
+  max-width: none !important;
+  max-height: none !important;
+  aspect-ratio: 9 / 16 !important;
+  margin: 0 !important;
+  z-index: 99999 !important;
+  border-radius: 14px !important;
+  border: 2px solid var(--mario-yellow) !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.95), 0 0 20px var(--mario-yellow-glow) !important;
+  touch-action: none;
+  animation: pip-pop-in 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes pip-pop-in {
+  from { opacity: 0; transform: scale(0.85); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.stream-frame.is-floating .stream-live-tag,
+.stream-frame.is-floating .stream-viewers-tag,
+.stream-frame.is-floating .stream-player-tools {
+  display: none !important;
+}
+
+.stream-frame.is-floating .audio-enable-button {
+  bottom: 8px;
+  left: 8px;
+  right: 8px;
+  min-height: 28px;
+  padding: 0 8px;
+  font-size: 10px;
+  justify-content: center;
+  border-radius: 8px;
+}
+
+.stream-frame.is-floating .audio-enable-button span:not(.audio-toggle-icon) {
+  display: none;
+}
+
+/* Barra superior de arrastre en modo flotante */
+.floating-drag-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 32px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.4) 80%, transparent 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px;
+  z-index: 10;
+  user-select: none;
+}
+
+.floating-drag-handle {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.stream-frame.is-dragging {
+  cursor: grabbing !important;
+  opacity: 0.92;
+}
+
+.stream-frame.is-dragging .floating-drag-handle {
+  cursor: grabbing !important;
+}
+
+.floating-dock-btn {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  border: none;
+  color: #fff;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.floating-dock-btn:hover {
+  background: var(--mario-red);
+  transform: scale(1.15);
+}
+
+/* Pantalla Completa */
+.stream-frame:fullscreen,
+.stream-frame:-webkit-full-screen {
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: none !important;
+  max-height: none !important;
+  border-radius: 0 !important;
+  border: none !important;
+}
+
+.stream-frame:fullscreen video,
+.stream-frame:-webkit-full-screen video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain !important;
+}
+
+.stream-caption {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 12px 2px 0;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+
+/* Order Section */
+.client-order {
+  padding: 28px 0 20px;
+  border-top: 1px solid var(--border-subtle);
+  margin-top: 20px;
+}
+
+.client-section-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.client-eyebrow {
+  color: var(--mario-yellow);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-shadow: 0 0 8px var(--mario-yellow-glow);
+}
+
+.client-section-heading h1 {
+  margin: 4px 0 0;
+  font-family: var(--font-display);
+  font-size: 25px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-main);
+}
+
+.client-round {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--mario-yellow);
+  background: rgba(254, 209, 0, 0.15);
+  border: 1px solid var(--mario-yellow);
+  box-shadow: 0 0 10px var(--mario-yellow-glow);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+}
+
+.client-round-tags {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.client-round-capacity {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-subtle);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  transition: all 0.2s;
+}
+
+.client-round-capacity.has-limit {
+  color: var(--mario-yellow);
+  background: rgba(254, 209, 0, 0.15);
+  border-color: var(--mario-yellow);
+  box-shadow: 0 0 10px var(--mario-yellow-glow);
+}
+
+/* Color Picker Rows */
+.client-color-picker {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.client-color-row {
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 6px 16px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: rgba(17, 23, 31, 0.85);
+  backdrop-filter: blur(12px);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--shadow-sm);
+}
+
+.client-color-row:hover {
+  border-color: var(--border-hover);
+  background: rgba(24, 32, 44, 0.92);
+}
+
+/* Dynamic Mario Glow on Selected Color Rows */
+.client-color-row[data-color="Morado"][data-selected=true] {
+  border-color: var(--mario-purple);
+  box-shadow: 0 0 16px rgba(157, 78, 221, 0.4), inset 0 0 12px rgba(157, 78, 221, 0.15);
+  background: rgba(24, 30, 44, 0.95);
+}
+
+.client-color-row[data-color="Amarillo"][data-selected=true] {
+  border-color: var(--mario-yellow);
+  box-shadow: 0 0 16px rgba(254, 209, 0, 0.4), inset 0 0 12px rgba(254, 209, 0, 0.15);
+  background: rgba(28, 34, 44, 0.95);
+}
+
+.client-color-row[data-color="Celeste"][data-selected=true] {
+  border-color: var(--mario-blue);
+  box-shadow: 0 0 16px rgba(0, 159, 227, 0.4), inset 0 0 12px rgba(0, 159, 227, 0.15);
+  background: rgba(20, 32, 46, 0.95);
+}
+
+.client-color-row[data-color="Rojo"][data-selected=true] {
+  border-color: var(--mario-red);
+  box-shadow: 0 0 16px rgba(229, 37, 33, 0.4), inset 0 0 12px rgba(229, 37, 33, 0.15);
+  background: rgba(30, 24, 32, 0.95);
+}
+
+.client-color-row[data-color="Verde"][data-selected=true] {
+  border-color: var(--mario-green);
+  box-shadow: 0 0 16px rgba(0, 168, 68, 0.4), inset 0 0 12px rgba(0, 168, 68, 0.15);
+  background: rgba(20, 32, 28, 0.95);
+}
+
+.client-color-row[data-color="Naranja"][data-selected=true] {
+  border-color: var(--mario-orange);
+  box-shadow: 0 0 16px rgba(255, 107, 53, 0.4), inset 0 0 12px rgba(255, 107, 53, 0.15);
+  background: rgba(30, 26, 28, 0.95);
+}
+
+.client-color-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+}
+
+.client-color-name {
+  display: flex;
+  align-items: center;
+  min-height: 38px;
+}
+
+.color-badge-img {
+  height: 36px;
+  max-height: 40px;
+  width: auto;
+  max-width: 135px;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.7));
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.client-color-row:hover .color-badge-img {
+  transform: scale(1.05);
+}
+
+.color-capacity-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  transition: all 0.2s;
+}
+
+.color-capacity-tag.in-stock {
+  color: var(--mario-yellow);
+  text-shadow: 0 0 8px var(--mario-yellow-glow);
+}
+
+.color-capacity-tag.low-stock {
+  color: var(--mario-orange);
+  text-shadow: 0 0 8px rgba(255, 107, 53, 0.6);
+  animation: pulse-low 1.4s infinite ease-in-out;
+}
+
+.color-capacity-tag.sold-out {
+  color: var(--mario-red);
+  text-shadow: 0 0 8px var(--mario-red-glow);
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.color-capacity-tag.unlimited {
+  color: var(--text-dim);
+}
+
+@keyframes pulse-low {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.75; transform: scale(0.96); }
+}
+
+.client-color-row[data-sold-out="true"] {
+  opacity: 0.6;
+  border-color: rgba(229, 37, 33, 0.4);
+}
+
+.client-color-row[data-sold-out="true"] .client-color-quantity output {
+  color: var(--mario-red);
+}
+
+/* Swatches with Mario Pure Tones */
+.swatch {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.purple { background-color: var(--mario-purple); box-shadow: 0 0 12px var(--mario-purple); }
+.yellow { background-color: var(--mario-yellow); box-shadow: 0 0 12px var(--mario-yellow); }
+.sky { background-color: var(--mario-blue); box-shadow: 0 0 12px var(--mario-blue); }
+.red { background-color: var(--mario-red); box-shadow: 0 0 12px var(--mario-red); }
+.green { background-color: var(--mario-green); box-shadow: 0 0 12px var(--mario-green); }
+.orange { background-color: var(--mario-orange); box-shadow: 0 0 12px var(--mario-orange); }
+
+/* Quantity Stepper (Mobile Touch Ergonomics >= 44px) */
+.client-color-quantity {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  background: #090d12;
+  overflow: hidden;
+}
+
+.client-color-quantity button {
+  width: 44px;
+  height: 40px;
+  border: 0;
+  background: transparent;
+  color: var(--text-main);
+  font-size: 20px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  touch-action: manipulation;
+}
+
+.client-color-quantity button[data-step="1"]:hover:not(:disabled) {
+  background: var(--mario-green);
+  color: #fff;
+}
+
+.client-color-quantity button[data-step="-1"]:hover:not(:disabled) {
+  background: var(--mario-red);
+  color: #fff;
+}
+
+.client-color-quantity button:active:not(:disabled) {
+  transform: scale(0.9);
+}
+
+.client-color-quantity button:disabled {
+  color: var(--text-dim);
+  cursor: not-allowed;
+  opacity: 0.3;
+}
+
+.client-color-quantity output {
+  width: 34px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #fff;
+}
+
+/* Order Actions */
+.client-order-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.client-selection-total {
+  flex: 1;
+  color: var(--mario-yellow);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* Super Star Primary Submit Button */
+.client-submit {
+  min-height: 50px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 24px;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, #fed100 0%, #ff9800 100%);
+  color: #1a0f00;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  box-shadow: 0 4px 20px var(--mario-yellow-glow), 0 3px 0 #cc6600;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  touch-action: manipulation;
+}
+
+.client-submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 26px rgba(254, 209, 0, 0.6), 0 4px 0 #cc6600;
+}
+
+.client-submit:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 1px 8px rgba(254, 209, 0, 0.4);
+}
+
+.client-submit:disabled {
+  background: var(--bg-surface-elevated);
+  color: var(--text-dim);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.client-message {
+  min-height: 20px;
+  margin: 10px 0 0;
+  color: var(--mario-yellow);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.client-closed {
+  margin-top: 12px;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  background: rgba(229, 37, 33, 0.16);
+  border: 1px solid var(--mario-red);
+  box-shadow: 0 0 14px var(--mario-red-glow);
+  color: #ff9997;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* VAR Real-Time Feed Section */
+.client-feed-section {
+  padding: 24px 0 0;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.client-feed-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.client-feed-heading h2 {
+  margin: 4px 0 0;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.client-feed-heading > span {
+  color: var(--mario-yellow);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.client-feed-list {
+  max-height: 220px;
+  overflow-y: auto;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: rgba(9, 13, 18, 0.88);
+  backdrop-filter: blur(12px);
+  padding: 4px 0;
+  scroll-behavior: smooth;
+}
+
+.client-feed-empty {
+  padding: 28px 16px;
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 12px;
+  margin: 0;
+}
+
+.client-feed-row {
+  min-height: 50px;
+  display: grid;
+  grid-template-columns: minmax(75px, 0.8fr) minmax(0, 1.4fr) 48px;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 12px;
+  animation: row-in 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.client-feed-row:last-child {
+  border-bottom: 0;
+}
+
+.client-feed-row strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 700;
+  color: var(--mario-yellow);
+}
+
+.client-feed-summary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-muted);
+}
+
+.client-feed-summary > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.client-feed-row time {
+  text-align: right;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.client-round-marker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 40px;
+  padding: 0 14px;
+  color: var(--mario-green);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.client-round-marker::before,
+.client-round-marker::after {
+  content: '';
+  height: 1px;
+  flex: 1;
+  background: rgba(0, 168, 68, 0.35);
+}
+
+.client-round-marker[data-closed=true] {
+  color: var(--mario-red);
+}
+
+.client-round-marker[data-closed=true]::before,
+.client-round-marker[data-closed=true]::after {
+  background: rgba(229, 37, 33, 0.35);
+}
+
+/* Footer */
+.client-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-subtle);
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+}
+
+/* Modals & Screens - Smooth Entrance and Exit Transitions */
+.screensaver-screen,
+.access-screen {
+  position: fixed;
+  z-index: 50;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(6, 9, 13, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              backdrop-filter 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              -webkit-backdrop-filter 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              visibility 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, backdrop-filter;
+}
+
+/* Open (active) state */
+.screensaver-screen.is-open,
+.access-screen.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* Closing (exit) state */
+.screensaver-screen.is-closing,
+.access-screen.is-closing {
+  opacity: 0;
+  visibility: visible;
+  pointer-events: none;
+  transition: opacity 0.22s cubic-bezier(0.4, 0, 0.7, 0.2),
+              backdrop-filter 0.22s cubic-bezier(0.4, 0, 0.7, 0.2),
+              -webkit-backdrop-filter 0.22s cubic-bezier(0.4, 0, 0.7, 0.2),
+              visibility 0.22s cubic-bezier(0.4, 0, 0.7, 0.2);
+}
+
+/* Fallback for direct display */
+.screensaver-screen[hidden],
+.access-screen[hidden] {
+  display: none !important;
+}
+
+.screensaver-panel,
+.access-panel {
+  width: min(100%, 390px);
+  padding: 34px 28px;
+  background: rgba(17, 23, 32, 0.94);
+  border: 2px solid rgba(254, 209, 0, 0.35);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 0 32px rgba(254, 209, 0, 0.2), var(--shadow-lg);
+  position: relative;
+  transform: scale(0.93) translateY(20px);
+  opacity: 0;
+  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s ease;
+  will-change: transform, opacity;
+}
+
+/* Panel entrance state */
+.screensaver-screen.is-open .screensaver-panel,
+.access-screen.is-open .access-panel {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+  box-shadow: 0 0 40px rgba(254, 209, 0, 0.25), var(--shadow-lg);
+}
+
+/* Panel exit state */
+.screensaver-screen.is-closing .screensaver-panel,
+.access-screen.is-closing .access-panel {
+  transform: scale(0.94) translateY(14px);
+  opacity: 0;
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
+  transition: transform 0.22s cubic-bezier(0.4, 0, 0.7, 0.2),
+              opacity 0.2s cubic-bezier(0.4, 0, 0.7, 0.2);
+}
+
+.screensaver-close,
+.access-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-muted);
+  font-size: 22px;
+  line-height: 1;
+  transition: all 0.15s;
+  touch-action: manipulation;
+}
+
+.screensaver-close:hover,
+.access-close:hover {
+  background: var(--mario-red);
+  color: #fff;
+  border-color: var(--mario-red);
+}
+
+.screensaver-mark {
+  width: 50px;
+  height: 50px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 24px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, #fed100 0%, #ff9800 100%);
+  color: #1a0f00;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 26px;
+  box-shadow: 0 6px 20px var(--mario-yellow-glow), 0 3px 0 #cc6600;
+}
+
+.screensaver-mark span {
+  color: var(--mario-red);
+}
+
+.screensaver-panel h2,
+.access-panel h2 {
+  margin: 8px 0 12px;
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  color: var(--text-main);
+}
+
+.screensaver-panel > p,
+.access-panel > p {
+  margin: 0 0 24px;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.client-pin-entry {
+  display: flex;
+  align-items: center;
+  border: 2px solid rgba(254, 209, 0, 0.3);
+  border-radius: var(--radius-md);
+  background: #090d12;
+  overflow: hidden;
+  transition: all 0.2s;
+}
+
+.client-pin-entry:focus-within {
+  border-color: var(--mario-yellow);
+  box-shadow: 0 0 16px var(--mario-yellow-glow);
+}
+
+.client-pin-entry input {
+  width: 100%;
+  min-width: 0;
+  padding: 14px 16px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-family: var(--font-mono);
+  font-size: 24px;
+  letter-spacing: 0.2em;
+  color: var(--mario-yellow);
+  text-align: center;
+}
+
+.client-pin-entry button {
+  width: 54px;
+  height: 56px;
+  border: 0;
+  background: linear-gradient(135deg, #fed100 0%, #ff9800 100%);
+  color: #1a0f00;
+  font-size: 24px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+
+.client-pin-entry button:hover {
+  background: #ffe033;
+}
+
+.client-error {
+  min-height: 20px;
+  margin: 10px 0 0;
+  color: var(--mario-red);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.whatsapp-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  width: 100%;
+  padding: 0 20px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: 0 4px 18px rgba(37, 211, 102, 0.4), 0 2px 0 #075e54;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.whatsapp-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(37, 211, 102, 0.55);
+}
+
+/* Animations */
+@keyframes appear {
+  from { opacity: 0; transform: scale(0.97) translateY(8px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes row-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

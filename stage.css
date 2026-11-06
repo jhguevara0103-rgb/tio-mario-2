@@ -1,0 +1,1127 @@
+/* ==========================================================================
+   stage.css - Estudio de Composición de Escenas Web (OBS 9:16 Vertical)
+   ========================================================================== */
+
+/* Layout Principal del Estudio: Vista Previa Izquierda Fija + Consola Derecha */
+.host-studio-container {
+  display: grid;
+  grid-template-columns: minmax(320px, 430px) minmax(380px, 1fr);
+  gap: 20px;
+  align-items: start;
+  width: 100%;
+}
+
+@media (max-width: 960px) {
+  .host-studio-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Columna Izquierda: Vista Previa del Escenario Fija */
+.host-stage-aside {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: sticky;
+  top: 16px;
+  z-index: 30;
+}
+
+.stage-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 10px 14px;
+  background: rgba(14, 20, 28, 0.95);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.stage-top-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stage-meta-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-dim);
+}
+
+.stage-meta-badge.audio {
+  background: rgba(34, 197, 94, 0.15);
+  color: #4ade80;
+  border-color: rgba(74, 222, 128, 0.35);
+}
+
+.stage-btn-broadcast {
+  min-height: 38px;
+  padding: 0 16px;
+  border: 1px solid var(--mario-red);
+  border-radius: var(--radius-sm);
+  background: rgba(229, 37, 33, 0.2);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 12.5px;
+  font-weight: 800;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 12px var(--mario-red-glow);
+}
+
+.stage-btn-broadcast:hover {
+  background: var(--mario-red);
+  transform: translateY(-1px);
+  box-shadow: 0 0 20px var(--mario-red-glow);
+}
+
+.stage-btn-broadcast.is-active {
+  background: linear-gradient(135deg, #00a844 0%, #15803d 100%);
+  border-color: var(--mario-green);
+  box-shadow: 0 0 16px var(--mario-green-glow);
+}
+
+.stage-btn-broadcast.is-active:hover {
+  background: #00c04e;
+}
+
+.stage-tool-btn {
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  background: rgba(24, 32, 44, 0.9);
+  color: var(--text-main);
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s;
+}
+
+.stage-tool-btn.compact {
+  padding: 0 8px;
+  font-size: 13px;
+}
+
+.stage-tool-btn:hover {
+  border-color: var(--mario-yellow);
+  color: var(--mario-yellow);
+}
+
+/* Visor del Escenario (Stage Viewport) */
+.stage-viewport-card {
+  display: flex;
+  flex-direction: column;
+  background: rgba(14, 20, 28, 0.95);
+  border: 2px solid rgba(254, 209, 0, 0.35);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.8), 0 0 20px rgba(254, 209, 0, 0.15);
+  overflow: hidden;
+}
+
+.stage-viewport-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: rgba(10, 14, 20, 0.9);
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 11px;
+}
+
+.stage-res-badge {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--mario-yellow);
+}
+
+.stage-mode-hint {
+  color: var(--text-dim);
+  font-size: 11px;
+}
+
+.stage-canvas-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  background: #06090d;
+  overflow: hidden;
+  user-select: none;
+  touch-action: none;
+}
+
+#stage-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+
+.stage-interactive-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 20;
+}
+
+/* Guías Magnéticas */
+.stage-guide-x {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background: var(--mario-yellow);
+  box-shadow: 0 0 6px var(--mario-yellow);
+  pointer-events: none;
+  z-index: 100;
+}
+
+.stage-guide-y {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: var(--mario-yellow);
+  box-shadow: 0 0 6px var(--mario-yellow);
+  pointer-events: none;
+  z-index: 100;
+}
+
+/* Cuadro de Selección de Capa (Bounding Box) - Totalmente limpio sin bordes cuando no está seleccionada */
+.stage-layer-box {
+  position: absolute;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  cursor: pointer;
+  z-index: 50;
+  pointer-events: auto;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+/* Exclusivo por selección: solo la capa seleccionada dibuja marco y bordes */
+.stage-layer-box.is-selected {
+  border: 2px solid var(--mario-blue) !important;
+  box-shadow: 0 0 14px var(--mario-blue-glow) !important;
+  cursor: move;
+}
+
+/* Efecto de Recorte Activo con la Tecla Alt (Verde OBS Studio) */
+.stage-layer-box.is-selected.is-cropping {
+  border: 2px solid #22c55e !important;
+  box-shadow: 0 0 14px rgba(34, 197, 94, 0.7) !important;
+}
+
+.stage-layer-box.is-locked.is-selected {
+  cursor: not-allowed;
+  border-style: dotted !important;
+  border-color: rgba(245, 158, 11, 0.9) !important;
+}
+
+.layer-rename-btn {
+  background: transparent;
+  border: none;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: var(--radius-xs);
+  color: var(--text-dim);
+  opacity: 0.75;
+  transition: all 0.15s;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.layer-rename-btn:hover {
+  opacity: 1;
+  background: rgba(254, 209, 0, 0.18);
+  color: var(--mario-yellow);
+  transform: scale(1.15);
+}
+
+/* 8 Manijas de Redimensionamiento y Recorte */
+.stage-handle {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: #ffffff;
+  border: 2px solid var(--mario-blue);
+  border-radius: 2px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.85);
+  pointer-events: auto;
+  z-index: 60;
+  transition: transform 0.15s, background 0.15s, border-color 0.15s;
+}
+
+.stage-handle:hover {
+  transform: scale(1.35);
+  background: var(--mario-yellow);
+  border-color: #000;
+}
+
+/* En modo Alt Crop, manijas en color verde */
+.stage-layer-box.is-cropping .stage-handle {
+  background: #22c55e !important;
+  border-color: #ffffff !important;
+}
+
+/* Posiciones de las 8 manijas */
+.stage-handle.nw { top: -6px; left: -6px; cursor: nwse-resize; }
+.stage-handle.n  { top: -6px; left: calc(50% - 6px); cursor: ns-resize; }
+.stage-handle.ne { top: -6px; right: -6px; cursor: nesw-resize; }
+.stage-handle.e  { top: calc(50% - 6px); right: -6px; cursor: ew-resize; }
+.stage-handle.se { bottom: -6px; right: -6px; cursor: nwse-resize; }
+.stage-handle.s  { bottom: -6px; left: calc(50% - 6px); cursor: ns-resize; }
+.stage-handle.sw { bottom: -6px; left: -6px; cursor: nesw-resize; }
+.stage-handle.w  { top: calc(50% - 6px); left: -6px; cursor: ew-resize; }
+
+.stage-layer-box.is-cropping .stage-handle.n,
+.stage-layer-box.is-cropping .stage-handle.s {
+  cursor: row-resize !important;
+}
+
+.stage-layer-box.is-cropping .stage-handle.e,
+.stage-layer-box.is-cropping .stage-handle.w {
+  cursor: col-resize !important;
+}
+
+/* Barra Flotante de Ajuste Rápido sobre la Capa Seleccionada */
+.stage-floating-toolbar {
+  position: absolute;
+  top: -38px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(14, 20, 28, 0.95);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 3px 6px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 159, 227, 0.3);
+  z-index: 75;
+  pointer-events: auto;
+  white-space: nowrap;
+}
+
+.stage-floating-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.stage-floating-btn:hover {
+  background: var(--mario-blue);
+  border-color: var(--mario-blue);
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 0 8px var(--mario-blue-glow);
+}
+
+.stage-floating-btn:active {
+  transform: translateY(0);
+}
+
+.stage-viewport-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  background: rgba(10, 14, 20, 0.9);
+  border-top: 1px solid var(--border-subtle);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+/* ==========================================================================
+   Columna Derecha: Consola de Producción (Capas, Chat y Lista Blanca)
+   ========================================================================== */
+
+.host-console-workspace {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.host-console-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.host-console-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  background: rgba(17, 24, 34, 0.85);
+  color: var(--text-muted);
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+
+.host-console-tab-btn:hover {
+  background: rgba(28, 38, 52, 0.95);
+  color: #fff;
+  border-color: rgba(254, 209, 0, 0.4);
+}
+
+.host-console-tab-btn.active {
+  background: rgba(0, 159, 227, 0.18);
+  border-color: var(--mario-blue);
+  color: #fff;
+  box-shadow: 0 0 12px var(--mario-blue-glow);
+}
+
+.console-panel[hidden] {
+  display: none !important;
+}
+
+.console-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Gestión de Capas */
+.stage-sidebar-card {
+  background: rgba(14, 20, 28, 0.95);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.stage-card-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.stage-title-with-add {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.stage-title-with-add span {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-dim);
+  letter-spacing: 0.05em;
+}
+
+.stage-btn-add-main {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 14px;
+  background: linear-gradient(135deg, #00a844 0%, #15803d 100%);
+  color: #ffffff;
+  border: 1px solid rgba(74, 222, 128, 0.5);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-display);
+  font-size: 12.5px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 168, 68, 0.35);
+  transition: all 0.18s ease;
+}
+
+.stage-btn-add-main:hover {
+  background: #00c04e;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0, 168, 68, 0.5);
+  border-color: #86efac;
+}
+
+.stage-btn-add-main .btn-plus-icon {
+  font-size: 13px;
+  display: inline-block;
+  line-height: 1;
+}
+
+.stage-layer-quick-tools {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.layer-tool-btn {
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  color: #fff;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.layer-tool-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--mario-yellow);
+}
+
+.layer-tool-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.layer-tool-btn.danger:hover:not(:disabled) {
+  background: var(--mario-red);
+  border-color: var(--mario-red);
+}
+
+/* Lista de Capas */
+.stage-layers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 480px;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+
+.stage-layers-empty {
+  padding: 24px 16px;
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 12px;
+  border: 1px dashed var(--border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.stage-layer-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background: rgba(20, 28, 38, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s;
+  gap: 10px;
+}
+
+.stage-layer-item:hover {
+  background: rgba(28, 38, 52, 0.95);
+  border-color: rgba(254, 209, 0, 0.35);
+}
+
+.stage-layer-item.active {
+  background: rgba(0, 159, 227, 0.16);
+  border-color: var(--mario-blue);
+  box-shadow: 0 0 12px var(--mario-blue-glow);
+}
+
+.layer-item-info {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  flex: 1;
+}
+
+.layer-item-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.layer-item-text-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.layer-item-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.layer-audio-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 800;
+  color: #4ade80;
+  background: rgba(34, 197, 94, 0.15);
+  padding: 1px 6px;
+  border-radius: 4px;
+  border: 1px solid rgba(74, 222, 128, 0.3);
+  width: fit-content;
+}
+
+.layer-audio-badge.mic {
+  color: #38bdf8;
+  background: rgba(0, 159, 227, 0.18);
+  border-color: rgba(56, 189, 248, 0.35);
+}
+
+.layer-mic-volume-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 5px;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 3px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  width: fit-content;
+}
+
+.layer-mic-mute-btn {
+  background: none;
+  border: none;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 3px;
+  transition: transform 0.15s, background 0.15s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.layer-mic-mute-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: scale(1.1);
+}
+
+.layer-mic-volume-slider {
+  accent-color: var(--mario-yellow);
+  width: 90px;
+  height: 4px;
+  margin: 0;
+  cursor: pointer;
+}
+
+.layer-mic-volume-val {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--mario-yellow);
+  min-width: 32px;
+  text-align: right;
+}
+
+/* Modal Selector de Micrófono */
+.stage-mic-select-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 14px 0 18px;
+}
+
+.stage-mic-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.stage-mic-select {
+  width: 100%;
+  height: 40px;
+  padding: 0 12px;
+  background: #0b1118;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: var(--radius-sm);
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.stage-mic-select:focus {
+  border-color: var(--mario-blue);
+  box-shadow: 0 0 10px var(--mario-blue-glow);
+}
+
+.stage-mic-status-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+.stage-mic-indicator-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
+  display: inline-block;
+}
+
+.layer-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.layer-action-icon-btn {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 13px;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 4px;
+  transition: color 0.15s, background 0.15s;
+}
+
+.layer-action-icon-btn:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.layer-action-icon-btn.is-hidden {
+  color: #ef4444;
+}
+
+.layer-action-icon-btn.is-locked {
+  color: #f59e0b;
+}
+
+/* ==========================================================================
+   Modales (Selector de Fuentes, Registro Rápido)
+   ========================================================================== */
+
+.stage-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 7, 11, 0.82);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: modalFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stage-modal-backdrop[hidden] {
+  display: none !important;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: scale(0.97); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.stage-modal-card {
+  width: 100%;
+  max-width: 600px;
+  background: linear-gradient(180deg, #161e2b 0%, #0d1219 100%);
+  border: 1px solid rgba(254, 209, 0, 0.3);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.9), 0 0 24px rgba(254, 209, 0, 0.15);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.stage-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 14px;
+}
+
+.stage-modal-title-wrap h3 {
+  margin: 4px 0 0;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.stage-modal-close {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-subtle);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-dim);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.stage-modal-close:hover {
+  background: var(--mario-red);
+  color: #fff;
+  border-color: var(--mario-red);
+}
+
+.stage-modal-desc {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.stage-source-options-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.stage-source-option-btn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  background: rgba(22, 32, 45, 0.7);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  color: #fff;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.18s ease;
+  position: relative;
+  text-decoration: none;
+}
+
+.stage-source-option-btn:hover {
+  background: rgba(30, 44, 62, 0.95);
+  border-color: var(--mario-blue);
+  box-shadow: 0 4px 14px rgba(0, 159, 227, 0.25);
+  transform: translateX(3px);
+}
+
+.stage-source-option-btn.primary {
+  border-color: rgba(74, 222, 128, 0.45);
+  background: rgba(21, 128, 61, 0.15);
+}
+
+.stage-source-option-btn.primary:hover {
+  border-color: #4ade80;
+  background: rgba(21, 128, 61, 0.28);
+  box-shadow: 0 4px 16px rgba(34, 197, 94, 0.35);
+}
+
+.option-icon-box {
+  font-size: 26px;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-sm);
+}
+
+.option-text-box {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+}
+
+.option-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.option-title {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.option-subtitle {
+  font-size: 11.5px;
+  color: var(--text-dim);
+  line-height: 1.35;
+}
+
+.option-badge {
+  font-size: 10px;
+  font-weight: 800;
+  padding: 1px 7px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-dim);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.option-badge.audio {
+  background: rgba(34, 197, 94, 0.2);
+  color: #4ade80;
+  border-color: rgba(74, 222, 128, 0.4);
+}
+
+.option-arrow {
+  font-size: 14px;
+  color: var(--text-dim);
+  transition: transform 0.15s, color 0.15s;
+}
+
+.stage-source-option-btn:hover .option-arrow {
+  color: var(--mario-yellow);
+  transform: translateX(4px);
+}
+
+.stage-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.stage-modal-cancel-btn {
+  padding: 8px 18px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--text-dim);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.stage-modal-cancel-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+/* ==========================================================================
+   Bloqueo de Escenario cuando no se está en la pestaña "Capas de la Escena"
+   ========================================================================== */
+.stage-canvas-wrapper.is-locked {
+  cursor: default !important;
+}
+
+.stage-canvas-wrapper.is-locked .stage-interactive-overlay {
+  pointer-events: none !important;
+  opacity: 0.35;
+}
+
+.stage-canvas-wrapper.is-locked .stage-layer-box {
+  pointer-events: none !important;
+  border-style: solid !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  box-shadow: none !important;
+}
+
+.stage-canvas-wrapper.is-locked .stage-handle,
+.stage-canvas-wrapper.is-locked .stage-floating-toolbar {
+  display: none !important;
+}
+
+/* ==========================================================================
+   Estilos de Clave Croma (Chroma Key)
+   ========================================================================== */
+.layer-item-action-btn.chroma-btn {
+  font-size: 13px;
+  position: relative;
+}
+
+.layer-item-action-btn.chroma-active {
+  background: rgba(34, 197, 94, 0.25) !important;
+  border-color: #22c55e !important;
+  color: #4ade80 !important;
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.4);
+}
+
+.layer-item-action-btn.chroma-active::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 6px #22c55e;
+}
+
+.chroma-modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 16px 0;
+}
+
+.chroma-toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  user-select: none;
+}
+
+.chroma-toggle-row input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #22c55e;
+  cursor: pointer;
+}
+
+.chroma-toggle-text {
+  font-size: 13px;
+  color: #fff;
+}
+
+.chroma-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.chroma-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.chroma-color-picker-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.chroma-color-input {
+  width: 44px;
+  height: 38px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.chroma-hex-input {
+  width: 90px;
+  height: 38px;
+  padding: 0 10px;
+  background: #090e14;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 6px;
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+.chroma-presets {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.chroma-preset-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: transform 0.15s, border-color 0.15s;
+}
+
+.chroma-preset-btn:hover {
+  transform: scale(1.2);
+  border-color: #fff;
+}
+
+.chroma-slider-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chroma-val-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--mario-yellow);
+  background: rgba(254, 209, 0, 0.12);
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+
+.chroma-range {
+  width: 100%;
+  accent-color: var(--mario-blue);
+  cursor: pointer;
+}

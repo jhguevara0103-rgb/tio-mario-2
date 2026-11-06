@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080c10">
+  <title>Ludito Live | Base de Datos de Participantes</title>
+  <link rel="stylesheet" href="/client.css">
+  <link rel="stylesheet" href="/admin.css">
+  <link rel="stylesheet" href="/database.css">
+  <script type="module" src="/shared.js"></script>
+  <script type="module" src="/database.js"></script>
+</head>
+<body class="db-page">
+  <main class="db-layout" id="db-layout">
+    <header class="host-header db-header">
+      <div class="host-header-left">
+        <a class="host-brand" href="/" aria-label="El Tio Mario"><img src="/assets/aistudio/titulo_8c4f5fbe.png" alt="El Tio Mario" class="brand-logo-img"><small>BASE DE DATOS</small></a>
+        <a class="db-nav-back" href="/admin.html" aria-label="Volver al panel de host">← Panel Host</a>
+        <a class="db-nav-client" href="/" id="db-nav-client" aria-label="Ir a la pantalla de cliente"><span class="btn-icon">🎮</span> Vista de Cliente</a>
+      </div>
+      <div class="host-live">
+        <span class="db-session-tag" id="db-host-session">HOST CONECTADO</span>
+      </div>
+    </header>
+
+    <div class="db-content">
+      <!-- Banner informativo y resumen -->
+      <section class="db-hero-card" aria-label="Resumen de base de datos">
+        <div class="db-hero-text">
+          <span class="host-eyebrow">REGISTRO DE ACCESOS Y NOMBRES</span>
+          <h1>Base de Datos de Participantes</h1>
+          <p>
+            Anota de manera manual el nombre de las personas y el sistema les otorgará automáticamente su <strong>código PIN de 4 dígitos</strong>. 
+            Cuando la persona ingrese a la transmisión con su código, sus mensajes en el chat se identificarán con su nombre para anotar sus pedidos fácilmente.
+          </p>
+          <div class="db-live-notice" style="margin-top: 12px; padding: 10px 14px; background: rgba(0, 159, 227, 0.15); border: 1px solid var(--mario-blue); border-radius: 8px; font-size: 12px; color: #bae6fd;">
+            💡 <strong>Consejo para el Live:</strong> Puedes gestionar esta base de datos directamente desde el <a href="/admin.html#db" style="color: var(--mario-yellow); font-weight: bold; text-decoration: underline;">Panel de Host</a> para que tu transmisión de OBS continúe activa sin cortes.
+          </div>
+        </div>
+        <div class="db-stats-grid">
+          <div class="db-stat-box">
+            <span class="stat-label">TOTAL REGISTRADOS</span>
+            <strong class="stat-number" id="db-stat-total">0</strong>
+          </div>
+          <div class="db-stat-box highlight">
+            <span class="stat-label">CÓDIGO DE PRUEBA RÁPIDA</span>
+            <strong class="stat-pin" id="db-stat-sample-pin">0412</strong>
+            <small>Usa este PIN en el cliente</small>
+          </div>
+        </div>
+      </section>
+
+      <!-- Formulario para agregar participante -->
+      <section class="db-card db-add-section" aria-labelledby="add-title">
+        <div class="db-card-header">
+          <div>
+            <span class="host-eyebrow">NUEVO INGRESO</span>
+            <h2 id="add-title">Registrar Persona y Asignar Código</h2>
+          </div>
+          <span class="db-badge-auto">⚡ Generador automático de PIN</span>
+        </div>
+
+        <form class="db-add-form" id="db-add-form">
+          <div class="db-form-fields">
+            <div class="db-field-group">
+              <label for="db-new-name">Nombre de la persona <span class="required">*</span></label>
+              <input type="text" id="db-new-name" placeholder="Ej: Carlos Ramírez, Lucía Gómez, etc." autocomplete="off" required maxlength="60">
+            </div>
+
+            <div class="db-field-group">
+              <label for="db-new-pin">Código PIN <span class="optional">(Opcional - 4 dígitos)</span></label>
+              <input type="text" id="db-new-pin" placeholder="Dejar vacío para generar auto" autocomplete="off" maxlength="4" pattern="\d*">
+            </div>
+
+            <div class="db-field-actions">
+              <button class="db-submit-button" id="db-submit-button" type="submit">
+                <span class="btn-icon">➕</span> Registrar Persona
+              </button>
+            </div>
+          </div>
+          <p class="db-form-status" id="db-form-status" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <!-- Tabla de Participantes -->
+      <section class="db-card db-table-section" aria-labelledby="table-title">
+        <div class="db-card-header db-table-header">
+          <div>
+            <span class="host-eyebrow">LISTA GENERAL</span>
+            <h2 id="table-title">Personas y Códigos Registrados</h2>
+          </div>
+          <div class="db-search-wrap">
+            <input type="search" id="db-search" placeholder="Buscar por nombre o PIN…" aria-label="Buscar en la base de datos">
+          </div>
+        </div>
+
+        <div class="db-table-container">
+          <table class="db-table" id="db-table">
+            <thead>
+              <tr>
+                <th scope="col" class="th-num">#</th>
+                <th scope="col" class="th-name">Nombre de la Persona</th>
+                <th scope="col" class="th-pin">Código PIN de Acceso</th>
+                <th scope="col" class="th-date">Fecha de Registro</th>
+                <th scope="col" class="th-actions">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="db-table-body">
+              <tr>
+                <td colspan="5" class="db-table-loading">Cargando base de datos de participantes…</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <!-- Toast de Notificación -->
+    <div class="db-toast" id="db-toast" role="status" aria-live="polite" hidden></div>
+
+    <!-- Modal de Confirmación de Eliminación -->
+    <div class="db-modal-backdrop" id="db-delete-modal" hidden>
+      <div class="db-modal-card" role="dialog" aria-modal="true" aria-labelledby="db-delete-modal-title">
+        <div class="db-modal-icon-badge danger">🗑️</div>
+        <h3 id="db-delete-modal-title" class="db-modal-title">¿Eliminar Participante?</h3>
+        <p id="db-delete-modal-text" class="db-modal-desc">
+          ¿Estás seguro de que deseas eliminar este participante de la base de datos?
+        </p>
+        <div class="db-modal-actions">
+          <button type="button" class="db-modal-btn cancel" id="db-delete-cancel">Cancelar</button>
+          <button type="button" class="db-modal-btn danger" id="db-delete-confirm">Sí, Eliminar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Autenticación de Host si no hay sesión -->
+    <div class="db-modal-backdrop" id="db-auth-modal" hidden>
+      <div class="db-modal-card" role="dialog" aria-modal="true" aria-labelledby="db-auth-modal-title">
+        <div class="db-modal-icon-badge">🔐</div>
+        <h3 id="db-auth-modal-title" class="db-modal-title">Acceso de Administrador</h3>
+        <p class="db-modal-desc">
+          Para registrar, cambiar PIN o eliminar participantes, ingresa la contraseña de host:
+        </p>
+        <form id="db-auth-form" class="db-modal-form">
+          <input type="password" id="db-auth-password" class="db-modal-input" placeholder="Contraseña de host…" required autocomplete="current-password">
+          <p class="db-auth-error" id="db-auth-error" hidden></p>
+          <div class="db-modal-actions">
+            <a href="/admin.html" class="db-modal-btn cancel">Ir al Panel Host</a>
+            <button type="submit" class="db-modal-btn submit" id="db-auth-submit">Desbloquear</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

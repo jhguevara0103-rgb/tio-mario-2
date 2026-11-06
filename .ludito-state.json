@@ -1,0 +1,60 @@
+{
+  "events": [],
+  "chat": [
+    {
+      "id": "b4d59bae-a9ae-43aa-9d12-d5c5d00fdb9d",
+      "name": "Carlos Ramírez Oficial",
+      "text": "Probando chat libre",
+      "timestamp": "2026-11-02T23:48:48.657Z",
+      "senderId": "dev_test_999",
+      "isRegistered": true,
+      "role": "registered"
+    },
+    {
+      "id": "44a2dcf5-db49-437a-821d-01650c57f7c6",
+      "name": "Carlos Ramírez Oficial",
+      "text": "¡Ya estoy registrado!",
+      "timestamp": "2026-11-02T23:49:01.332Z",
+      "senderId": "dev_test_999",
+      "isRegistered": true,
+      "role": "registered"
+    },
+    {
+      "id": "e30f0473-ed9c-475e-8819-8d339bf59bc2",
+      "name": "Usuario Prueba",
+      "text": "Hola soy bloqueado",
+      "timestamp": "2026-11-04T19:58:28.295Z",
+      "senderId": "test_device_1",
+      "isRegistered": false,
+      "role": "guest"
+    },
+    {
+      "id": "6f8a9161-e7c9-428d-8735-18102cf54242",
+      "name": "Usuario Prueba",
+      "text": "Hola ya estoy desbloqueado!",
+      "timestamp": "2026-11-04T19:58:28.305Z",
+      "senderId": "test_device_1",
+      "isRegistered": false,
+      "role": "guest"
+    },
+    {
+      "id": "ad891fd5-0ea4-4603-9e5c-29cad9ba0d1a",
+      "name": "Usuario Prueba Bloqueo",
+      "text": "¡Ya puedo escribir!",
+      "timestamp": "2026-11-04T19:59:27.088Z",
+      "senderId": "test_dev_99",
+      "isRegistered": false,
+      "role": "guest"
+    }
+  ],
+  "voicePreference": {
+    "voiceURI": "Microsoft Pablo - Spanish (Spain)",
+    "lang": "es-ES",
+    "name": "Microsoft Pablo - Spanish (Spain)",
+    "volume": 0.7
+  },
+  "round": 1,
+  "accepting": true,
+  "roundCapacity": null,
+  "resetTimestamp": 1793453414649
+}

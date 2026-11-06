@@ -1,0 +1,284 @@
+/* Host Camera / OBS Virtual Camera Controls with Super Mario Tones */
+
+.host-camera-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+
+.host-camera-controls select {
+  min-width: 0;
+  max-width: 260px;
+  height: 40px;
+  padding: 0 32px 0 14px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface);
+  color: var(--text-main);
+  font-size: 12px;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.host-camera-controls select:focus {
+  border-color: var(--mario-blue);
+  box-shadow: 0 0 12px var(--mario-blue-glow);
+}
+
+.host-camera-controls button {
+  min-height: 40px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, #009fe3 0%, #0077b6 100%);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 14px var(--mario-blue-glow), 0 2px 0 #005f9e;
+  transition: all 0.15s;
+  touch-action: manipulation;
+}
+
+.host-camera-controls button:hover:not(:disabled) {
+  background: #1cb5ff;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0, 159, 227, 0.55), 0 2px 0 #005f9e;
+}
+
+.host-camera-controls button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.host-camera-controls button:disabled {
+  background: var(--bg-surface-elevated);
+  color: var(--text-dim);
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.host-camera-controls #host-camera-stop {
+  border: 1px solid var(--mario-red);
+  background: rgba(229, 37, 33, 0.2);
+  color: #ff9997;
+  box-shadow: 0 0 10px var(--mario-red-glow);
+}
+
+.host-camera-controls #host-camera-stop:hover:not(:disabled) {
+  background: var(--mario-red);
+  color: #fff;
+}
+
+.host-camera-controls #host-screen-button {
+  background: linear-gradient(135deg, #00a844 0%, #15803d 100%);
+  box-shadow: 0 4px 14px var(--mario-green-glow), 0 2px 0 #0d5327;
+}
+
+.host-camera-controls #host-screen-button:hover:not(:disabled) {
+  background: #00c04e;
+  box-shadow: 0 6px 18px rgba(0, 168, 68, 0.6), 0 2px 0 #0d5327;
+}
+
+.host-broadcast-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 6px 14px;
+  background: rgba(229, 37, 33, 0.16);
+  border: 1px solid var(--mario-red);
+  border-radius: var(--radius-full);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #fff;
+  box-shadow: 0 0 12px var(--mario-red-glow);
+}
+
+.live-pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--mario-red);
+  box-shadow: 0 0 8px #fff, 0 0 12px var(--mario-red);
+  animation: beacon-pulse 1.8s infinite;
+}
+
+.host-broadcast-badge strong {
+  color: var(--mario-yellow);
+  font-weight: 700;
+  margin-left: 4px;
+}
+
+.host-camera-note {
+  margin: 8px 0 0;
+  color: var(--text-dim);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.host-camera-controls .host-refresh-btn {
+  background: rgba(254, 209, 0, 0.12);
+  border: 1px solid rgba(254, 209, 0, 0.4);
+  color: var(--mario-yellow);
+  box-shadow: 0 0 10px rgba(254, 209, 0, 0.15);
+}
+
+.host-camera-controls .host-refresh-btn:hover:not(:disabled) {
+  background: var(--mario-yellow);
+  color: #1a0f00;
+  box-shadow: 0 0 16px var(--mario-yellow-glow);
+}
+
+.host-iframe-tip {
+  margin-top: 14px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  background: rgba(0, 159, 227, 0.12);
+  border: 1px solid rgba(0, 159, 227, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 11px;
+  color: #bae6fd;
+}
+
+.host-iframe-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--mario-blue);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 10.5px;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px var(--mario-blue-glow);
+}
+
+.host-iframe-link:hover {
+  background: #38bdf8;
+  color: #0c4a6e;
+}
+
+.host-obs-guide {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+}
+
+.guide-item {
+  padding: 10px 14px;
+  background: rgba(9, 13, 19, 0.7);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+}
+
+.guide-item strong {
+  display: block;
+  color: var(--mario-yellow);
+  margin-bottom: 3px;
+  font-size: 11.5px;
+}
+
+.guide-item p {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.guide-item em {
+  font-style: normal;
+  color: #fff;
+  font-weight: 700;
+}
+
+.guide-item.guide-item-highlight {
+  border-color: rgba(0, 168, 68, 0.4);
+  background: rgba(0, 168, 68, 0.08);
+}
+
+.guide-item.guide-item-highlight strong {
+  color: #4ade80;
+}
+
+/* Modal de Recordatorio de Audio de Pantalla */
+.host-modal-screen-audio {
+  border-color: rgba(0, 168, 68, 0.5) !important;
+  box-shadow: 0 0 32px var(--mario-green-glow), var(--shadow-lg) !important;
+}
+
+.screen-audio-tip-box {
+  margin: 16px 0 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: rgba(9, 13, 19, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  padding: 14px;
+}
+
+.screen-tip-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 12.5px;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+.screen-tip-step.highlight {
+  background: rgba(0, 168, 68, 0.15);
+  border: 1px solid rgba(0, 168, 68, 0.4);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  color: #f1f5f9;
+}
+
+.screen-tip-step .step-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--mario-yellow);
+  color: #000;
+  font-weight: 900;
+  font-size: 11px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.screen-tip-step.highlight .step-badge {
+  background: var(--mario-green);
+  color: #fff;
+}
+
+.screen-audio-note {
+  margin-bottom: 20px !important;
+  color: #94a3b8 !important;
+  font-size: 12px !important;
+}
+
+.host-btn-green {
+  background: linear-gradient(135deg, #00a844 0%, #15803d 100%) !important;
+  box-shadow: 0 4px 16px var(--mario-green-glow), 0 2px 0 #0d5327 !important;
+}
+
+.host-btn-green:hover {
+  background: #00c04e !important;
+  transform: translateY(-1px);
+}

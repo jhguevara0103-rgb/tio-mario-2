@@ -1,0 +1,86 @@
+/* Voice Controls for Host Room with Super Mario Tones */
+
+.host-chat-tools {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.host-voice-select {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.host-voice-select select {
+  max-width: 220px;
+  height: 36px;
+  padding: 0 30px 0 12px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface);
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.host-voice-select select:focus {
+  border-color: var(--mario-yellow);
+  box-shadow: 0 0 12px var(--mario-yellow-glow);
+}
+
+.host-voice-select select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.host-voice-test {
+  height: 36px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, #00a844 0%, #15803d 100%);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 800;
+  box-shadow: 0 3px 12px var(--mario-green-glow), 0 2px 0 #0d5327;
+  transition: all 0.15s;
+  touch-action: manipulation;
+}
+
+.host-voice-test:hover:not(:disabled) {
+  background: #00c04e;
+  transform: translateY(-1px);
+  box-shadow: 0 5px 16px rgba(0, 168, 68, 0.6), 0 2px 0 #0d5327;
+}
+
+.host-voice-test:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.host-voice-test:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.host-voice-toggle {
+  white-space: nowrap;
+}
+
+@media (max-width: 700px) {
+  .host-chat-tools {
+    gap: 8px;
+  }
+  .host-voice-select select {
+    max-width: 160px;
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "e4d0a191b7d6965977ed9d48211e9e1829da741ac7166331d9f4bd30913883c6": {
+    "name": "Tío Mario",
+    "role": "host"
+  },
+  "55a861b5b21ba552d144a33313cd198b48cd55e0b3eb7d2443308b8774a5f725": {
+    "name": "Tío Mario",
+    "role": "host"
+  },
+  "66b1f86c3fb2000aea4edba7e35443f6cf9426f483213e3b": {
+    "name": "María P.",
+    "role": "client"
+  },
+  "e17e36a4a2b22f375e3ecc9486c98535478d49f5e4e304d97a926335237aeb2f": {
+    "name": "Tío Mario",
+    "role": "host"
+  },
+  "1b54c6919cb51ec0626a500a5efdbcb80feca68c791721f9fa566701b2e6df7d": {
+    "name": "Tío Mario",
+    "role": "host"
+  },
+  "5681f600f95bc58ac5df3171c6c0ffef54ba564cac804969d7c01bcd46339ac0": {
+    "name": "Tío Mario",
+    "role": "host"
+  },
+  "de6c81269b4e72b44fcbbe20b3d016d36dce914d2e1ee2c7": {
+    "name": "María P.",
+    "role": "client"
+  },
+  "f36c9c470f7e2323ce90d44f2fff16934aa74df5f66b78d3c1c8c7a917a5286d": {
+    "name": "Tío Mario",
+    "role": "host"
+  },
+  "00766adf51fd2602d1994aa9cd983b1dec5b3f99fb1c9d63": {
+    "name": "Carlos Ramirez",
+    "role": "client"
+  },
+  "1d9210b035673376d9db5cc1b19db3f55e57c15cb8225213814ce1ef48a2eae8": {
+    "name": "Tío Mario",
+    "role": "host"
+  },
+  "9812e1fe0e929b4c511659142d103b5ec066de609459cd74c4e7f58d77ccfb78": {
+    "name": "Tío Mario",
+    "role": "host"
+  },
+  "40ba41289e713debe4cd94cb6d73c84709c2cf0dadee2663056f3a29baca7141": {
+    "name": "Tío Mario",
+    "role": "host"
+  },
+  "4a7f9d10c8e710d7bd145137c25fb91e6635d13116d225db": {
+    "name": "Carlos Ramirez",
+    "role": "client"
+  },
+  "d38280a38a2572cc511732abac59e8623cb6c6ec0fc165240629e3ab1ff376ee": {
+    "name": "Tío Mario",
+    "role": "host",
+    "lastActive": 1793397502395
+  },
+  "9301be62dc9465ebb061a26afcdfe85b9da6357346c2f66a6010d09410095725": {
+    "name": "Tío Mario",
+    "role": "host",
+    "lastActive": 1793402111216
+  },
+  "150b98d34480d52ef2785b3a509a70b966c5ffd1bfa416318b2388e0efb9ea22": {
+    "name": "Tío Mario",
+    "role": "host",
+    "lastActive": 1793402111244
+  },
+  "0e8c357dd8722f0443d1838f94436966049e9d56258b60d3": {
+    "name": "Invitado",
+    "role": "client",
+    "lastActive": 1793450243096
+  },
+  "5d5df4fa29c72edc686070a759994f78d99c1adf5cab06bd": {
+    "name": "Invitado",
+    "role": "client",
+    "lastActive": 1793453387377
+  },
+  "cd644e4597b2774bf500f3d5be4aec34bd02b4820278458d": {
+    "name": "Invitado",
+    "role": "client",
+    "lastActive": 1793453395069
+  },
+  "f4c5d80674ba0df8aae10c9928c3f3c57af5cb1a32bb86e06bd7ed5102ce46e8": {
+    "name": "Tío Mario",
+    "role": "host",
+    "lastActive": 1793453414636
+  },
+  "41c42cae0ca2fa4bb66f0970ca0ded31effb1b78173400342ec21d79ef9aa9c4": {
+    "name": "Tío Mario",
+    "role": "host",
+    "lastActive": 1793663341322
+  },
+  "cadf97ec539cf390797e9fbe0e8a4427feb32515be9433478e46fd4e4d50ea8d": {
+    "name": "Tío Mario",
+    "role": "host",
+    "lastActive": 1793822367067
+  }
+}

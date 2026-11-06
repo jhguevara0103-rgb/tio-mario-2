@@ -1,0 +1,87 @@
+/* Volume Slider & Navigation Tools with Super Mario Tones */
+
+.host-client-link {
+  margin-left: 12px;
+  padding: 8px 14px;
+  border: 1px solid rgba(254, 209, 0, 0.4);
+  border-radius: var(--radius-sm);
+  background: rgba(24, 32, 44, 0.9);
+  color: var(--mario-yellow);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 0 10px rgba(254, 209, 0, 0.2);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.host-client-link:hover {
+  background: rgba(30, 41, 59, 0.95);
+  border-color: var(--mario-yellow);
+  color: #fff;
+  box-shadow: 0 0 16px var(--mario-yellow-glow);
+  transform: translateY(-1px);
+}
+
+.host-volume-control,
+.client-volume-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.host-volume-control input,
+.client-volume-control input {
+  width: 76px;
+  height: 6px;
+  margin: 0;
+  accent-color: var(--mario-yellow);
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-full);
+  outline: none;
+  cursor: pointer;
+  touch-action: pan-x;
+}
+
+.host-volume-control output,
+.client-volume-control output {
+  min-width: 32px;
+  color: var(--mario-yellow);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.host-volume-control input:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.client-chat-tools {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+}
+
+@media (max-width: 450px) {
+  .client-chat-tools {
+    align-items: flex-end;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .client-volume-control input {
+    width: 64px;
+  }
+}

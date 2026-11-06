@@ -1,0 +1,657 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080c10">
+  <title>Ludito Live | Estudio de Composición de Escenas</title>
+  <link rel="stylesheet" href="/admin.css">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/database.css">
+  <link rel="stylesheet" href="/host-multicolor.css">
+  <link rel="stylesheet" href="/chat.css">
+  <link rel="stylesheet" href="/voice.css">
+  <link rel="stylesheet" href="/volume-nav.css">
+  <link rel="stylesheet" href="/reset.css">
+  <link rel="stylesheet" href="/stage.css">
+  <script type="module" src="/shared.js"></script>
+  <script type="module" src="/admin.js"></script>
+</head>
+<body class="host-page">
+  <main class="host-layout" id="host-layout" hidden>
+    <!-- Cabecera de Producción -->
+    <header class="host-header">
+      <div class="host-header-left">
+        <a class="host-brand" href="./admin.html" aria-label="El Tio Mario - Estudio de Composición">
+          <img src="./assets/aistudio/titulo_8c4f5fbe.png" alt="El Tio Mario" class="brand-logo-img">
+          <small>ESTUDIO TÍO MARIO</small>
+        </a>
+      </div>
+      <div class="host-live">
+        <button type="button" class="host-preview-client-btn" id="host-preview-client-btn" title="Abrir simulador en paralelo de la vista del cliente">
+          <span class="client-phone-icon">📱</span> <span class="preview-btn-text">Vista Cliente</span>
+        </button>
+        <span class="live-dot-indicator"></span>
+        <span class="host-session" id="host-session">HOST CONECTADO</span>
+        <button type="button" class="host-logout-btn" id="host-logout-btn" title="Cerrar sesión de anfitrión">🔒 Salir</button>
+        <a class="host-client-link" href="./" target="_blank" rel="noopener" title="Abrir transmisión pública en pestaña nueva">Ver Live ↗</a>
+      </div>
+    </header>
+
+    <!-- Contenedor Principal: Vista Previa Fija a la Izquierda y Consola a la Derecha -->
+    <div class="host-studio-container">
+      
+      <!-- SECCIÓN IZQUIERDA: Vista Previa del Escenario (Stage 9:16) Fija y en Tiempo Real -->
+      <aside class="host-stage-aside" id="host-stage-aside" aria-label="Vista previa del escenario principal">
+        <div class="stage-top-bar">
+          <button type="button" class="stage-btn-broadcast" id="stage-broadcast-toggle" title="Transmitir la composición con audio en vivo a todos los clientes">
+            <span class="btn-live-dot"></span> <span id="stage-broadcast-label">🔴 Emitir en Vivo a Clientes</span>
+          </button>
+          <div class="stage-top-meta">
+            <span class="stage-meta-badge viewers">👥 <strong id="host-viewers-count">0</strong></span>
+            <button type="button" class="stage-tool-btn compact" id="stage-btn-deselect" title="Deseleccionar capa activa y ver lienzo totalmente limpio">🧹 Deseleccionar</button>
+            <button type="button" class="stage-tool-btn compact" id="stage-reset-btn" title="Restablecer capas predeterminadas">🔄</button>
+          </div>
+        </div>
+
+        <div class="stage-viewport-card">
+          <div class="stage-viewport-header">
+            <span class="stage-res-badge">📐 1080 × 1920 (9:16)</span>
+            <span class="stage-mode-hint" id="stage-mode-hint">💡 Clic: seleccionar · Arrastra: mover · <strong>Alt</strong>: recortar</span>
+          </div>
+
+          <div class="stage-canvas-wrapper" id="stage-wrapper">
+            <canvas id="stage-canvas" width="1080" height="1920"></canvas>
+            <div class="stage-interactive-overlay" id="stage-interactive-overlay"></div>
+            <div class="stage-guide-x" id="stage-guide-x" hidden></div>
+            <div class="stage-guide-y" id="stage-guide-y" hidden></div>
+          </div>
+
+          <div class="stage-viewport-footer">
+            <span id="stage-selected-name">Ninguna capa seleccionada</span>
+            <span id="stage-selected-coords">Haz clic en una capa para editarla o recortarla</span>
+          </div>
+        </div>
+      </aside>
+
+      <!-- SECCIÓN DERECHA: Consola de Producción (Tío Mario Studio, Chat, Lista de Participantes y Editar Vista Cliente) -->
+      <div class="host-console-workspace">
+        <!-- Navegación de Pestañas Derecha -->
+        <nav class="host-console-nav" aria-label="Secciones de la consola">
+          <button type="button" class="host-console-tab-btn active" id="tab-btn-layers" data-view="layers">
+            <span class="tab-icon">📚</span> Tío Mario Studio
+          </button>
+          <button type="button" class="host-console-tab-btn" id="tab-btn-chat" data-view="chat">
+            <span class="tab-icon">💬</span> Chat en Vivo
+          </button>
+          <button type="button" class="host-console-tab-btn" id="tab-btn-whitelist" data-view="whitelist">
+            <span class="tab-icon">👥</span> Lista de participantes
+            <span class="host-tab-badge" id="host-tab-db-badge">0</span>
+          </button>
+          <button type="button" class="host-console-tab-btn" id="tab-btn-blacklist" data-view="blacklist">
+            <span class="tab-icon">🚫</span> Usuarios Bloqueados
+            <span class="host-tab-badge danger" id="host-tab-blacklist-badge">0</span>
+          </button>
+        </nav>
+
+        <!-- PANEL 1: Gestión de Capas y Selector de Fuentes (+) -->
+        <section class="console-panel" id="panel-layers">
+          <div class="stage-sidebar-card stage-layers-card">
+            <div class="stage-card-title">
+              <div class="stage-title-with-add">
+                <span>📚 LIENZO DE TRANSMISIÓN</span>
+                <button type="button" class="stage-btn-add-main" id="stage-btn-add-source" title="Abrir selector de fuentes para agregar al lienzo">
+                  <span class="btn-plus-icon">➕</span> Agregar Fuente
+                </button>
+              </div>
+              <div class="stage-layer-quick-tools">
+                <button type="button" class="layer-tool-btn" id="stage-layer-fit" title="Ajustar al tamaño de la escena (manteniendo proporción)" disabled>⛶</button>
+                <button type="button" class="layer-tool-btn" id="stage-layer-center" title="Centrar en la escena" disabled>✛</button>
+                <button type="button" class="layer-tool-btn" id="stage-layer-up" title="Subir nivel de capa" disabled>⬆️</button>
+                <button type="button" class="layer-tool-btn" id="stage-layer-down" title="Bajar nivel de capa" disabled>⬇️</button>
+                <button type="button" class="layer-tool-btn" id="stage-layer-dup" title="Duplicar capa seleccionada" disabled>📄</button>
+                <button type="button" class="layer-tool-btn danger" id="stage-layer-del" title="Eliminar capa seleccionada" disabled>🗑️</button>
+              </div>
+            </div>
+
+            <div class="stage-layers-list" id="stage-layers-list">
+              <!-- Se llena dinámicamente con las capas activas -->
+            </div>
+          </div>
+        </section>
+
+        <!-- PANEL 2: Chat en Vivo e Identificación de Usuarios -->
+        <section class="console-panel" id="panel-chat" hidden>
+          <div class="host-chat-heading">
+            <div>
+              <span class="host-eyebrow">SALA EN DIRECTO</span>
+              <h2>Chat Interactivo</h2>
+            </div>
+            <div class="host-chat-tools">
+              <label class="host-voice-select" for="voiceSelector">
+                <span>Voz</span>
+                <select id="voiceSelector" disabled aria-label="Seleccionar voz">
+                  <option value="">Buscando voces…</option>
+                </select>
+              </label>
+              <button class="host-voice-test" id="host-voice-test" type="button" disabled>Probar</button>
+              <label class="host-volume-control" for="host-voice-volume">
+                <span>Vol.</span>
+                <input id="host-voice-volume" type="range" min="0" max="1" step="0.1" value="1" aria-label="Volumen">
+                <output id="host-voice-volume-value" for="host-voice-volume">100%</output>
+              </label>
+              <label class="host-voice-toggle">
+                <input id="host-voice-toggle" type="checkbox" checked>
+                <span>Leer</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="host-chat-list" id="host-chat-list" role="log" aria-live="polite">
+            <p class="host-feed-empty" id="host-chat-empty">Todavía no hay mensajes.</p>
+          </div>
+
+          <div class="chat-form-container">
+            <div class="chat-quick-emojis" id="host-quick-emojis" aria-label="Emoticones rápidos">
+              <button type="button" class="quick-emoji-chip" data-emoji="📢" title="Anuncio">📢</button>
+              <button type="button" class="quick-emoji-chip" data-emoji="🔥" title="Fuego">🔥</button>
+              <button type="button" class="quick-emoji-chip" data-emoji="👏" title="Aplausos">👏</button>
+              <button type="button" class="quick-emoji-chip" data-emoji="⭐" title="Estrella">⭐</button>
+              <button type="button" class="quick-emoji-chip" data-emoji="🍄" title="Hongo">🍄</button>
+              <button type="button" class="quick-emoji-chip" data-emoji="🎲" title="Dado">🎲</button>
+              <button type="button" class="quick-emoji-chip" data-emoji="🏆" title="Trofeo">🏆</button>
+              <button type="button" class="quick-emoji-chip" data-emoji="🔴" title="Rojo">🔴</button>
+              <button type="button" class="quick-emoji-chip" data-emoji="🟣" title="Morado">🟣</button>
+              <button type="button" class="quick-emoji-chip" data-emoji="🟡" title="Amarillo">🟡</button>
+              <button type="button" class="quick-emoji-chip" data-emoji="🔵" title="Celeste">🔵</button>
+              <button type="button" class="quick-emoji-chip" data-emoji="🟢" title="Verde">🟢</button>
+              <button type="button" class="quick-emoji-chip" data-emoji="🟠" title="Naranja">🟠</button>
+            </div>
+            <form class="host-chat-form" id="host-chat-form">
+              <label class="visually-hidden" for="host-chat-input">Escribe al chat</label>
+              <div class="chat-input-wrapper">
+                <button class="chat-emoji-toggle" id="host-chat-emoji-toggle" type="button" title="Emoticones">
+                  <span class="emoji-toggle-icon">😀</span>
+                </button>
+                <input id="host-chat-input" type="text" maxlength="500" placeholder="Escribe al chat como anfitrión…" autocomplete="off" required>
+              </div>
+              <button id="host-chat-send" type="submit" aria-label="Enviar mensaje">&rarr;</button>
+            </form>
+            <div class="chat-emoji-popover" id="host-chat-emoji-popover" hidden aria-label="Panel de emoticones"></div>
+          </div>
+          <p class="host-chat-status" id="host-chat-status" aria-live="polite">Conectado al chat</p>
+        </section>
+
+        <!-- PANEL 3: Lista de Participantes (Registrados inteligentemente desde el Chat) -->
+        <section class="console-panel" id="panel-whitelist" hidden>
+          <div class="db-card db-table-section">
+            <div class="db-card-header db-table-header">
+              <div>
+                <span class="host-eyebrow">PARTICIPANTES EN DIRECTO</span>
+                <h2>👥 Lista de Participantes</h2>
+                <p class="db-smart-hint" style="margin: 4px 0 0; font-size: 12.5px; color: var(--text-dim);">
+                  💡 <strong>Registro inteligente:</strong> Para asignar o cambiar el nombre a un usuario, haz clic en el botón ✏️ <strong>Asignar nombre</strong> dentro de cualquiera de sus mensajes en el <strong>Chat en Vivo</strong>.
+                </p>
+              </div>
+              <div class="db-search-wrap">
+                <input type="search" id="db-search" placeholder="Buscar por nombre…" aria-label="Buscar participante">
+              </div>
+            </div>
+
+            <div class="db-table-container">
+              <table class="db-table" id="db-table">
+                <thead>
+                  <tr>
+                    <th scope="col" class="th-num">#</th>
+                    <th scope="col" class="th-name">Nombre Oficial</th>
+                    <th scope="col" class="th-date">Fecha Registro</th>
+                    <th scope="col" class="th-actions">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="db-table-body">
+                  <tr><td colspan="4" class="db-table-loading">Cargando lista de participantes…</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- PANEL 4: Lista Negra / Usuarios Bloqueados -->
+        <section class="console-panel" id="panel-blacklist" hidden>
+          <div class="db-card db-table-section">
+            <div class="db-card-header db-table-header">
+              <div>
+                <span class="host-eyebrow" style="color: var(--mario-red);">ACCESO RESTRINGIDO</span>
+                <h2>🚫 Usuarios Bloqueados (Lista Negra)</h2>
+                <p class="db-modal-desc" style="font-size: 13px; text-align: left; margin-top: 4px;">
+                  Estos usuarios han sido expulsados y tienen denegado el envío de comentarios. Al hacer clic en <strong>Desbloquear</strong>, recuperarán inmediatamente el acceso al chat con su identidad y permisos originales.
+                </p>
+              </div>
+              <div class="db-search-wrap">
+                <input type="search" id="blacklist-search" placeholder="Buscar bloqueado…" aria-label="Buscar en la lista negra">
+              </div>
+            </div>
+
+            <div class="db-table-container">
+              <table class="db-table" id="blacklist-table">
+                <thead>
+                  <tr>
+                    <th scope="col" class="th-num">#</th>
+                    <th scope="col" class="th-name">Usuario / Identificador</th>
+                    <th scope="col" class="th-type">Tipo</th>
+                    <th scope="col" class="th-date">Fecha Bloqueo</th>
+                    <th scope="col" class="th-actions">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="blacklist-table-body">
+                  <tr><td colspan="5" class="db-table-loading">Cargando lista negra…</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Barra Inferior de Control -->
+    <footer class="host-footer">
+      <span>ESTUDIO EN VIVO</span>
+      <p class="host-reset-status" id="host-reset-status" aria-live="polite"></p>
+      <button class="host-reset-button" id="host-reset-button" type="button">Limpiar Chat y Reiniciar Sala</button>
+      <a href="/" target="_blank" rel="noopener">ABRIR VISTA DE CLIENTE ↗</a>
+    </footer>
+  </main>
+
+  <!-- Modal Selector Dinámico de Fuentes (+) -->
+  <div class="stage-modal-backdrop" id="stage-source-modal" hidden>
+    <div class="stage-modal-card" role="dialog" aria-modal="true" aria-labelledby="stage-source-modal-title">
+      <div class="stage-modal-header">
+        <div class="stage-modal-title-wrap">
+          <span class="host-eyebrow">SELECTOR DE FUENTES</span>
+          <h3 id="stage-source-modal-title" class="stage-modal-title">Agregar Fuente al Escenario</h3>
+        </div>
+        <button type="button" class="stage-modal-close" id="stage-source-modal-close" aria-label="Cerrar modal">✕</button>
+      </div>
+
+      <p class="stage-modal-desc">
+        Selecciona el tipo de fuente para superponer en el escenario vertical (9:16):
+      </p>
+
+      <div class="stage-source-options-grid">
+        <!-- Opción 1: Capturar Ventana / Pantalla / Pestaña con Audio -->
+        <button type="button" class="stage-source-option-btn primary" id="modal-add-screen">
+          <div class="option-icon-box">🖥️</div>
+          <div class="option-text-box">
+            <div class="option-title-row">
+              <span class="option-title">Capturar Ventana / Pantalla / Pestaña</span>
+              <span class="option-badge audio">🔊 Audio Nativo</span>
+            </div>
+            <span class="option-subtitle">Captura aplicaciones (Excel, Word, navegadores, YouTube o juegos) con sonido del sistema.</span>
+          </div>
+          <span class="option-arrow">➔</span>
+        </button>
+
+        <!-- Opción 2: Cargar Imagen Local -->
+        <label class="stage-source-option-btn" id="modal-add-image-label">
+          <div class="option-icon-box">🖼️</div>
+          <div class="option-text-box">
+            <div class="option-title-row">
+              <span class="option-title">Cargar Imagen Local</span>
+              <span class="option-badge">📁 Archivo PC</span>
+            </div>
+            <span class="option-subtitle">Sube fotos, banners, logos o stickers desde tu ordenador (PNG, JPG, WEBP, SVG).</span>
+          </div>
+          <span class="option-arrow">➔</span>
+          <input type="file" id="stage-modal-upload-input" accept="image/png, image/jpeg, image/jpg, image/webp, image/svg+xml, image/gif" hidden>
+        </label>
+
+        <!-- Opción 3: Logo Oficial El Tío Mario -->
+        <button type="button" class="stage-source-option-btn" id="modal-add-logo">
+          <div class="option-icon-box">🏷️</div>
+          <div class="option-text-box">
+            <span class="option-title">Logo Oficial "El Tío Mario"</span>
+            <span class="option-subtitle">Coloca el logotipo oficial de la marca como cabecera o marca de agua.</span>
+          </div>
+          <span class="option-arrow">➔</span>
+        </button>
+
+        <!-- Opción 4: Marco Mágico Decorativo -->
+        <button type="button" class="stage-source-option-btn" id="modal-add-frame">
+          <div class="option-icon-box">✨</div>
+          <div class="option-text-box">
+            <span class="option-title">Marco Mágico del Tablero</span>
+            <span class="option-subtitle">Superpone el marco decorativo translúcido para eventos y dinámicas.</span>
+          </div>
+          <span class="option-arrow">➔</span>
+        </button>
+
+        <!-- Opción 5: Rótulo / Texto de Anuncio -->
+        <button type="button" class="stage-source-option-btn" id="modal-add-text">
+          <div class="option-icon-box">🔤</div>
+          <div class="option-text-box">
+            <span class="option-title">Rótulo / Texto de Anuncio</span>
+            <span class="option-subtitle">Añade un cartel o texto flotante personalizable.</span>
+          </div>
+          <span class="option-arrow">➔</span>
+        </button>
+
+        <!-- Opción 6: Añadir Micrófono / Dispositivo de Audio -->
+        <button type="button" class="stage-source-option-btn primary" id="modal-add-mic">
+          <div class="option-icon-box">🎤</div>
+          <div class="option-text-box">
+            <div class="option-title-row">
+              <span class="option-title">Añadir Micrófono / Dispositivo de Audio</span>
+              <span class="option-badge audio">🎙️ Audio en Vivo</span>
+            </div>
+            <span class="option-subtitle">Captura tu micrófono o interfaz de sonido para hablar en directo junto con la escena.</span>
+          </div>
+          <span class="option-arrow">➔</span>
+        </button>
+      </div>
+
+      <div class="stage-modal-footer">
+        <button type="button" class="stage-modal-cancel-btn" id="stage-source-modal-cancel">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Selector de Micrófono / Dispositivo de Audio -->
+  <div class="stage-modal-backdrop" id="stage-mic-modal" hidden>
+    <div class="stage-modal-card" style="max-width: 480px;" role="dialog" aria-modal="true" aria-labelledby="stage-mic-modal-title">
+      <div class="stage-modal-header">
+        <div class="stage-modal-title-wrap">
+          <span class="host-eyebrow">ENTRADA DE VOZ EN VIVO</span>
+          <h3 id="stage-mic-modal-title" class="stage-modal-title">🎤 Conectar Micrófono</h3>
+        </div>
+        <button type="button" class="stage-modal-close" id="stage-mic-modal-close" aria-label="Cerrar modal">✕</button>
+      </div>
+
+      <p class="stage-modal-desc">
+        Selecciona el micrófono o entrada de audio para mezclar tu voz en vivo en el escenario. Podrás regular su volumen o silenciarlo independientemente desde la lista de capas:
+      </p>
+
+      <div class="stage-mic-select-wrap">
+        <label for="stage-mic-select" class="stage-mic-label">Micrófonos detectados en tu equipo:</label>
+        <select id="stage-mic-select" class="stage-mic-select" aria-label="Seleccionar micrófono">
+          <option value="">Buscando dispositivos de audio…</option>
+        </select>
+        <div class="stage-mic-status-row">
+          <span class="stage-mic-indicator-dot"></span>
+          <span id="stage-mic-status-text" class="stage-mic-status-text">Listo para conectar</span>
+        </div>
+      </div>
+
+      <div class="stage-modal-footer">
+        <button type="button" class="stage-modal-cancel-btn" id="stage-mic-modal-cancel">Cancelar</button>
+        <button type="button" class="stage-btn-add-main" id="stage-mic-confirm-btn">
+          <span class="btn-icon">🎙️</span> Añadir al Escenario
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Rápido de Registro de Participante desde el Chat -->
+  <div class="stage-modal-backdrop" id="quick-register-modal" hidden>
+    <div class="stage-modal-card" style="max-width: 460px;" role="dialog" aria-modal="true" aria-labelledby="quick-reg-title">
+      <div class="stage-modal-header">
+        <div class="stage-modal-title-wrap">
+          <span class="host-eyebrow">REGISTRO RÁPIDO</span>
+          <h3 id="quick-reg-title" class="stage-modal-title">Registrar Participante</h3>
+        </div>
+        <button type="button" class="stage-modal-close" id="quick-reg-close" aria-label="Cerrar modal">✕</button>
+      </div>
+      <form id="quick-reg-form">
+        <p class="stage-modal-desc">
+          Asigna un nombre oficial y color a este usuario. Sus mensajes anteriores y futuros se actualizarán automáticamente.
+        </p>
+        <div style="margin: 12px 0;">
+          <label for="quick-reg-name" style="display:block; font-size:12px; font-weight:700; margin-bottom:6px; color:#cbd5e1;">Nombre de la persona</label>
+          <div class="db-name-input-row">
+            <input type="text" id="quick-reg-name" required maxlength="60" placeholder="Ej: Pedro González 🌟" style="flex:1; height:38px; padding:0 10px; background:#0b1118; border:1px solid rgba(255,255,255,0.15); border-radius:6px; color:#fff; font-size:13px;">
+            <button type="button" class="db-emoji-trigger-btn" id="quick-reg-emoji-btn" title="Insertar emoticones">😊</button>
+            <div class="chat-emoji-popover db-emoji-popover" id="quick-reg-emoji-popover" hidden aria-label="Panel de emoticones"></div>
+          </div>
+          <input type="hidden" id="quick-reg-device-id" value="">
+
+          <div class="db-color-picker-section" style="margin-top:12px;">
+            <span class="db-color-selector-label">Color del nombre:</span>
+            <div class="db-color-chips-group" id="quick-reg-color-palette" role="radiogroup" aria-label="Color del nombre">
+              <button type="button" class="db-color-chip active" data-color="" title="Multicolor Mario (Arcoíris)" style="background: linear-gradient(135deg, #fed100, #e52521, #009fe3, #00a844);"></button>
+              <button type="button" class="db-color-chip" data-color="#fed100" title="Amarillo" style="background: #fed100;"></button>
+              <button type="button" class="db-color-chip" data-color="#e52521" title="Rojo" style="background: #e52521;"></button>
+              <button type="button" class="db-color-chip" data-color="#009fe3" title="Celeste" style="background: #009fe3;"></button>
+              <button type="button" class="db-color-chip" data-color="#00a844" title="Verde" style="background: #00a844;"></button>
+              <button type="button" class="db-color-chip" data-color="#9d4edd" title="Morado" style="background: #9d4edd;"></button>
+              <button type="button" class="db-color-chip" data-color="#ff6b35" title="Naranja" style="background: #ff6b35;"></button>
+            </div>
+            <input type="hidden" id="quick-reg-color" value="">
+          </div>
+        </div>
+        <div class="stage-modal-footer">
+          <button type="button" class="stage-modal-cancel-btn" id="quick-reg-cancel">Cancelar</button>
+          <button type="submit" class="stage-btn-add-main" style="margin-left: 8px;">Guardar Participante</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal de Edición de Participante de la Lista Blanca -->
+  <div class="db-modal-backdrop" id="db-edit-modal" hidden>
+    <div class="db-modal-card" style="max-width: 460px; text-align: left; align-items: stretch;" role="dialog" aria-modal="true" aria-labelledby="db-edit-modal-title">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div class="db-modal-icon-badge" style="width:38px; height:38px; font-size:18px;">✏️</div>
+          <h3 id="db-edit-modal-title" class="db-modal-title" style="font-size:18px;">Editar Nombre y Color</h3>
+        </div>
+        <button type="button" class="stage-modal-close" id="db-edit-cancel-x" aria-label="Cerrar modal">✕</button>
+      </div>
+      <p class="db-modal-desc" style="font-size: 13px; text-align:left;">
+        Modifica el nombre o color asignado. Se actualizará en tiempo real tanto en la lista como en todos sus mensajes del chat.
+      </p>
+      <form id="db-edit-form" class="db-modal-form" style="margin-top: 8px;">
+        <input type="hidden" id="db-edit-id" value="">
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <label for="db-edit-name" style="font-size: 12px; font-weight: 700; color: #cbd5e1;">Nombre oficial:</label>
+          <div class="db-name-input-row">
+            <input type="text" id="db-edit-name" required maxlength="60" placeholder="Nombre completo o apodo" class="db-modal-input" style="flex: 1; padding: 10px 14px;">
+            <button type="button" class="db-emoji-trigger-btn" id="db-edit-emoji-btn" title="Insertar emoticones">😊</button>
+            <div class="chat-emoji-popover db-emoji-popover" id="db-edit-emoji-popover" hidden aria-label="Panel de emoticones"></div>
+          </div>
+        </div>
+
+        <div class="db-color-picker-section" style="margin-top: 14px;">
+          <span class="db-color-selector-label">Color del nombre:</span>
+          <div class="db-color-chips-group" id="db-edit-color-palette" role="radiogroup" aria-label="Color del nombre">
+            <button type="button" class="db-color-chip active" data-color="" title="Multicolor Mario (Arcoíris)" style="background: linear-gradient(135deg, #fed100, #e52521, #009fe3, #00a844);"></button>
+            <button type="button" class="db-color-chip" data-color="#fed100" title="Amarillo" style="background: #fed100;"></button>
+            <button type="button" class="db-color-chip" data-color="#e52521" title="Rojo" style="background: #e52521;"></button>
+            <button type="button" class="db-color-chip" data-color="#009fe3" title="Celeste" style="background: #009fe3;"></button>
+            <button type="button" class="db-color-chip" data-color="#00a844" title="Verde" style="background: #00a844;"></button>
+            <button type="button" class="db-color-chip" data-color="#9d4edd" title="Morado" style="background: #9d4edd;"></button>
+            <button type="button" class="db-color-chip" data-color="#ff6b35" title="Naranja" style="background: #ff6b35;"></button>
+          </div>
+          <input type="hidden" id="db-edit-color" value="">
+        </div>
+
+        <div class="db-modal-actions" style="margin-top: 20px;">
+          <button type="button" class="db-modal-btn cancel" id="db-edit-cancel">Cancelar</button>
+          <button type="submit" class="db-modal-btn submit" id="db-edit-submit">Guardar Cambios</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal de Bloqueo de Usuario y Purga Masiva -->
+  <div class="db-modal-backdrop" id="db-block-modal" hidden>
+    <div class="db-modal-card" role="dialog" aria-modal="true" aria-labelledby="db-block-modal-title">
+      <div class="db-modal-icon-badge danger">🚫</div>
+      <h3 id="db-block-modal-title" class="db-modal-title">¿Bloquear y Purgar Historial?</h3>
+      <p id="db-block-modal-text" class="db-modal-desc">
+        Esta acción <strong>expulsará al usuario</strong> e impedirá que vuelva a enviar mensajes. Además, <strong>se eliminarán automáticamente todos los mensajes</strong> que haya escrito en el chat en tiempo real.
+      </p>
+      <div class="db-modal-actions">
+        <button type="button" class="db-modal-btn cancel" id="db-block-cancel">Cancelar</button>
+        <button type="button" class="db-modal-btn danger" id="db-block-confirm">Sí, Bloquear y Purgar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de confirmación para eliminar de la lista blanca -->
+  <div class="db-modal-backdrop" id="db-delete-modal" hidden>
+    <div class="db-modal-card" role="dialog" aria-modal="true" aria-labelledby="db-delete-modal-title">
+      <div class="db-modal-icon-badge danger">🗑️</div>
+      <h3 id="db-delete-modal-title" class="db-modal-title">¿Eliminar Participante?</h3>
+      <p id="db-delete-modal-text" class="db-modal-desc">
+        ¿Deseas remover este participante de la lista blanca oficial?
+      </p>
+      <div class="db-modal-actions">
+        <button type="button" class="db-modal-btn cancel" id="db-delete-cancel">Cancelar</button>
+        <button type="button" class="db-modal-btn danger" id="db-delete-confirm">Sí, Eliminar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de reinicio de sala / chat -->
+  <section class="host-modal" id="reset-confirm-modal" hidden aria-labelledby="reset-modal-title">
+    <div class="host-modal-panel">
+      <span class="host-eyebrow">REINICIO DE SALA</span>
+      <h2 id="reset-modal-title">Limpiar Chat y Reiniciar Sala</h2>
+      <p>Esta acción limpiará los mensajes del chat acumulados. Tu sesión de anfitrión permanecerá activa.</p>
+      <div class="host-modal-actions">
+        <button class="host-modal-cancel" id="reset-modal-cancel" type="button">Cancelar</button>
+        <button class="host-modal-confirm" id="reset-modal-confirm" type="button">Sí, reiniciar</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Login de Host -->
+  <section class="host-login" id="host-login" aria-labelledby="host-login-title">
+    <form class="host-login-panel" id="host-login-form" novalidate>
+      <span class="host-eyebrow">ACCESO RESTRINGIDO</span>
+      <h1 id="host-login-title">Estudio de Producción</h1>
+      <label for="host-password">Contraseña de anfitrión</label>
+      <div class="host-pin-entry">
+        <input id="host-password" type="password" autocomplete="current-password" required>
+        <button type="submit" aria-label="Entrar al panel">&rarr;</button>
+      </div>
+      <p class="host-login-error" id="host-login-error" aria-live="polite"></p>
+    </form>
+  </section>
+
+  <!-- Modal de Configuración de Clave Croma (Chroma Key) -->
+  <div class="stage-modal-backdrop" id="stage-chroma-modal" hidden>
+    <div class="stage-modal-card" style="max-width: 480px;" role="dialog" aria-modal="true" aria-labelledby="stage-chroma-title">
+      <div class="stage-modal-header">
+        <div class="stage-modal-title-wrap">
+          <span class="host-eyebrow">EFECTO DE TRANSPARENCIA</span>
+          <h3 id="stage-chroma-title" class="stage-modal-title">🎭 Clave Croma (Chroma Key)</h3>
+        </div>
+        <button type="button" class="stage-modal-close" id="stage-chroma-close" aria-label="Cerrar modal">✕</button>
+      </div>
+
+      <p class="stage-modal-desc">
+        Elimina el fondo de esta fuente para hacerla transparente. Los elementos ubicados detrás se verán a través del color eliminado en tiempo real.
+      </p>
+
+      <div class="chroma-modal-content">
+        <!-- Activar / Desactivar Clave Croma -->
+        <label class="chroma-toggle-row">
+          <input type="checkbox" id="chroma-enable-toggle">
+          <span class="chroma-toggle-text"><strong>Habilitar Clave Croma en esta capa</strong></span>
+        </label>
+
+        <!-- Selección de Color -->
+        <div class="chroma-field-group">
+          <label class="chroma-label">Color a transparentar:</label>
+          <div class="chroma-color-picker-row">
+            <input type="color" id="chroma-color-picker" value="#00ff00" class="chroma-color-input" title="Selector de color">
+            <input type="text" id="chroma-hex-input" value="#00ff00" maxlength="7" class="chroma-hex-input" title="Código Hexadecimal">
+            <div class="chroma-presets">
+              <button type="button" class="chroma-preset-btn" data-color="#00ff00" title="Verde Croma Estándar" style="background:#00ff00;"></button>
+              <button type="button" class="chroma-preset-btn" data-color="#0000ff" title="Azul Croma Estándar" style="background:#0000ff;"></button>
+              <button type="button" class="chroma-preset-btn" data-color="#000000" title="Negro" style="background:#000000; border: 1px solid #555;"></button>
+              <button type="button" class="chroma-preset-btn" data-color="#ffffff" title="Blanco" style="background:#ffffff;"></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tolerancia -->
+        <div class="chroma-field-group">
+          <div class="chroma-slider-header">
+            <label for="chroma-tolerance-slider" class="chroma-label">Tolerancia (Amplitud del color):</label>
+            <span id="chroma-tolerance-val" class="chroma-val-badge">35%</span>
+          </div>
+          <input type="range" id="chroma-tolerance-slider" min="1" max="100" value="35" class="chroma-range">
+        </div>
+
+        <!-- Suavizado de bordes -->
+        <div class="chroma-field-group">
+          <div class="chroma-slider-header">
+            <label for="chroma-softness-slider" class="chroma-label">Suavizado de bordes (Feather):</label>
+            <span id="chroma-softness-val" class="chroma-val-badge">12%</span>
+          </div>
+          <input type="range" id="chroma-softness-slider" min="0" max="50" value="12" class="chroma-range">
+        </div>
+      </div>
+
+      <div class="stage-modal-footer">
+        <button type="button" class="stage-modal-cancel-btn" id="stage-chroma-cancel">Cerrar</button>
+        <button type="button" class="stage-btn-add-main" id="stage-chroma-apply">Listo</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast de Notificaciones -->
+  <div class="db-toast" id="db-toast" role="status" aria-live="polite" hidden></div>
+
+  <!-- Modal Flotante: Simulador en paralelo de la Vista del Cliente -->
+  <div class="client-preview-drawer" id="client-preview-drawer" hidden>
+    <div class="client-preview-backdrop" id="client-preview-backdrop"></div>
+    <div class="client-preview-card" role="dialog" aria-modal="true" aria-labelledby="client-preview-title">
+      <header class="client-preview-card-header">
+        <div class="preview-title-wrap">
+          <span class="preview-phone-badge">📱</span>
+          <div>
+            <h3 id="client-preview-title" class="preview-title">Simulador Vista de Cliente</h3>
+            <span class="preview-subtitle">Probando en tiempo real</span>
+          </div>
+        </div>
+        <div class="preview-header-actions">
+          <a href="/" target="_blank" rel="noopener" class="preview-newtab-btn" title="Abrir en pestaña nueva">
+            Pestaña Completa ↗
+          </a>
+          <button type="button" class="preview-close-button" id="client-preview-close" aria-label="Cerrar vista previa">✕</button>
+        </div>
+      </header>
+      <div class="client-preview-body">
+        <div class="client-phone-mockup">
+          <iframe id="client-preview-frame" title="Vista en vivo del cliente" src="about:blank"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Bloqueo de Seguridad por Inactividad (La transmisión en vivo se mantiene activa y al aire) -->
+  <div class="host-inactivity-modal-backdrop" id="host-inactivity-lock-overlay" hidden>
+    <div class="host-inactivity-modal-card" role="dialog" aria-modal="true" aria-labelledby="inactivity-lock-title">
+      <div class="inactivity-icon-badge">🔒</div>
+      <h2 id="inactivity-lock-title" class="inactivity-lock-title">Controles en Pausa por Inactividad</h2>
+      <p class="inactivity-lock-desc">
+        Han transcurrido más de 10 minutos sin actividad en el panel host.
+      </p>
+      <div class="inactivity-live-badge-notice">
+        <span class="live-pulse-dot"></span>
+        <span>🔴 <strong>La transmisión al aire sigue activa</strong> hacia todos los clientes sin cortes.</span>
+      </div>
+      <form class="inactivity-unlock-form" id="inactivity-unlock-form" novalidate>
+        <label for="inactivity-password">Ingresa tu contraseña para reactivar los controles:</label>
+        <div class="host-pin-entry">
+          <input id="inactivity-password" type="password" required autocomplete="current-password" placeholder="Contraseña de anfitrión">
+          <button type="submit" id="inactivity-unlock-btn" aria-label="Desbloquear panel">&rarr;</button>
+        </div>
+        <p class="host-login-error" id="inactivity-unlock-error" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

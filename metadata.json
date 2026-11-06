@@ -1,0 +1,6 @@
+{
+  "name": "Ludito Live",
+  "description": "Plataforma web en tiempo real con vista de participante, panel de control de host, VAR en vivo, chat interactivo con voz y gestión de pedidos.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
