@@ -67,6 +67,8 @@ body.client-page::before {
   background-image: 
     linear-gradient(180deg, rgba(8, 12, 16, 0.74) 0%, rgba(8, 12, 16, 0.86) 40%, rgba(8, 12, 16, 0.96) 100%),
     radial-gradient(circle at 50% 0%, rgba(0, 168, 68, 0.16) 0%, transparent 60%),
+    url('/media/fondo-escenario-mario.jpg'),
+    url('./media/fondo-escenario-mario.jpg'),
     url('/assets/aistudio/descarga_5f1f4c5c.jpg');
   background-position: center top;
   background-size: cover;

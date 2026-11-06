@@ -2,7 +2,9 @@
 
 @font-face {
   font-family: 'Mario Kart DS';
-  src: url('/assets/Mario-Kart-DS.ttf') format('truetype');
+  src: url('/media/fuente-mario-kart-ds.ttf') format('truetype'),
+       url('./media/fuente-mario-kart-ds.ttf') format('truetype'),
+       url('/assets/Mario-Kart-DS.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -74,6 +76,8 @@ body.host-page::before {
   background-image: 
     linear-gradient(135deg, rgba(8, 12, 16, 0.82) 0%, rgba(8, 12, 16, 0.90) 50%, rgba(8, 12, 16, 0.97) 100%),
     radial-gradient(circle at 50% 20%, rgba(0, 159, 227, 0.14) 0%, transparent 60%),
+    url('/media/fondo-admin-mario.jpg'),
+    url('./media/fondo-admin-mario.jpg'),
     url('/assets/aistudio/8594562e6b74dd3d3b8cc3b9e16125b0_c5d421d9.jpg');
   background-position: center center;
   background-size: cover;

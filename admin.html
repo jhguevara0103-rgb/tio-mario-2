@@ -5,17 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#080c10">
   <title>Ludito Live | Estudio de Composición de Escenas</title>
-  <link rel="stylesheet" href="./admin.css">
-  <link rel="stylesheet" href="./style.css">
-  <link rel="stylesheet" href="./database.css">
-  <link rel="stylesheet" href="./host-multicolor.css">
-  <link rel="stylesheet" href="./chat.css">
-  <link rel="stylesheet" href="./voice.css">
-  <link rel="stylesheet" href="./volume-nav.css">
-  <link rel="stylesheet" href="./reset.css">
-  <link rel="stylesheet" href="./stage.css">
-  <script type="module" src="./shared.js"></script>
-  <script type="module" src="./admin.js"></script>
+  <link rel="stylesheet" href="/admin.css">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/database.css">
+  <link rel="stylesheet" href="/host-multicolor.css">
+  <link rel="stylesheet" href="/chat.css">
+  <link rel="stylesheet" href="/voice.css">
+  <link rel="stylesheet" href="/volume-nav.css">
+  <link rel="stylesheet" href="/reset.css">
+  <link rel="stylesheet" href="/stage.css">
+  <script type="module" src="/shared.js"></script>
+  <script type="module" src="/admin.js"></script>
 </head>
 <body class="host-page">
   <main class="host-layout" id="host-layout" hidden>
@@ -23,7 +23,7 @@
     <header class="host-header">
       <div class="host-header-left">
         <a class="host-brand" href="./admin.html" aria-label="El Tio Mario - Estudio de Composición">
-          <img src="./assets/aistudio/titulo_8c4f5fbe.png" alt="El Tio Mario" class="brand-logo-img">
+          <img src="./media/logo-el-tio-mario.png" alt="El Tio Mario" class="brand-logo-img">
           <small>ESTUDIO TÍO MARIO</small>
         </a>
       </div>
@@ -347,10 +347,71 @@
           </div>
           <span class="option-arrow">➔</span>
         </button>
+
+        <!-- Opción 7: Banners de Jugador y Fondos Temáticos Mario (Media) -->
+        <button type="button" class="stage-source-option-btn" id="modal-add-banners">
+          <div class="option-icon-box">🎮</div>
+          <div class="option-text-box">
+            <div class="option-title-row">
+              <span class="option-title">Banners de Jugadores (Colores Mario)</span>
+              <span class="option-badge">🎨 6 Colores</span>
+            </div>
+            <span class="option-subtitle">Cintillos de jugador oficiales (Amarillo, Rojo, Verde, Celeste, Morado, Naranja) y Fondos temáticos.</span>
+          </div>
+          <span class="option-arrow">➔</span>
+        </button>
       </div>
 
       <div class="stage-modal-footer">
         <button type="button" class="stage-modal-cancel-btn" id="stage-source-modal-cancel">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Selector de Banners de Jugador Mario -->
+  <div class="stage-modal-backdrop" id="stage-banners-modal" hidden>
+    <div class="stage-modal-card" style="max-width: 560px;" role="dialog" aria-modal="true" aria-labelledby="stage-banners-modal-title">
+      <div class="stage-modal-header">
+        <div class="stage-modal-title-wrap">
+          <span class="host-eyebrow">GALERÍA MULTIMEDIA MARIO</span>
+          <h3 id="stage-banners-modal-title" class="stage-modal-title">🎮 Banners y Recursos Temáticos</h3>
+        </div>
+        <button type="button" class="stage-modal-close" id="stage-banners-modal-close" aria-label="Cerrar modal">✕</button>
+      </div>
+
+      <p class="stage-modal-desc">
+        Selecciona un cintillo de jugador o fondo temático de la carpeta <code>public/media/</code> para insertarlo en el escenario:
+      </p>
+
+      <div class="stage-banners-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 1rem;">
+        <button type="button" class="stage-banner-btn" data-banner="amarillo" style="background: rgba(254, 209, 0, 0.12); border: 1px solid rgba(254, 209, 0, 0.4); border-radius: 8px; padding: 10px; text-align: center; cursor: pointer; color: #fff;">
+          <img src="./media/banner-jugador-amarillo.png" alt="Amarillo" style="width: 100%; height: auto; border-radius: 4px; display: block; margin-bottom: 6px;">
+          <strong style="color: #fed100; font-size: 13px;">🟡 Amarillo</strong>
+        </button>
+        <button type="button" class="stage-banner-btn" data-banner="rojo" style="background: rgba(229, 37, 33, 0.12); border: 1px solid rgba(229, 37, 33, 0.4); border-radius: 8px; padding: 10px; text-align: center; cursor: pointer; color: #fff;">
+          <img src="./media/banner-jugador-rojo.png" alt="Rojo" style="width: 100%; height: auto; border-radius: 4px; display: block; margin-bottom: 6px;">
+          <strong style="color: #ff6b6b; font-size: 13px;">🔴 Rojo</strong>
+        </button>
+        <button type="button" class="stage-banner-btn" data-banner="verde" style="background: rgba(0, 168, 68, 0.12); border: 1px solid rgba(0, 168, 68, 0.4); border-radius: 8px; padding: 10px; text-align: center; cursor: pointer; color: #fff;">
+          <img src="./media/banner-jugador-verde.png" alt="Verde" style="width: 100%; height: auto; border-radius: 4px; display: block; margin-bottom: 6px;">
+          <strong style="color: #51cf66; font-size: 13px;">🟢 Verde</strong>
+        </button>
+        <button type="button" class="stage-banner-btn" data-banner="celeste" style="background: rgba(0, 159, 227, 0.12); border: 1px solid rgba(0, 159, 227, 0.4); border-radius: 8px; padding: 10px; text-align: center; cursor: pointer; color: #fff;">
+          <img src="./media/banner-jugador-celeste.png" alt="Celeste" style="width: 100%; height: auto; border-radius: 4px; display: block; margin-bottom: 6px;">
+          <strong style="color: #339af0; font-size: 13px;">🔵 Celeste</strong>
+        </button>
+        <button type="button" class="stage-banner-btn" data-banner="morado" style="background: rgba(157, 78, 221, 0.12); border: 1px solid rgba(157, 78, 221, 0.4); border-radius: 8px; padding: 10px; text-align: center; cursor: pointer; color: #fff;">
+          <img src="./media/banner-jugador-morado.png" alt="Morado" style="width: 100%; height: auto; border-radius: 4px; display: block; margin-bottom: 6px;">
+          <strong style="color: #cc5de8; font-size: 13px;">🟣 Morado</strong>
+        </button>
+        <button type="button" class="stage-banner-btn" data-banner="naranja" style="background: rgba(255, 107, 53, 0.12); border: 1px solid rgba(255, 107, 53, 0.4); border-radius: 8px; padding: 10px; text-align: center; cursor: pointer; color: #fff;">
+          <img src="./media/banner-jugador-naranja.png" alt="Naranja" style="width: 100%; height: auto; border-radius: 4px; display: block; margin-bottom: 6px;">
+          <strong style="color: #ff922b; font-size: 13px;">🟠 Naranja</strong>
+        </button>
+      </div>
+
+      <div class="stage-modal-footer">
+        <button type="button" class="stage-modal-cancel-btn" id="stage-banners-modal-cancel">Cerrar</button>
       </div>
     </div>
   </div>

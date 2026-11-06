@@ -36,7 +36,13 @@ export function initStage({ streamBroadcaster, getLocalStream }) {
   const modalAddLogo = document.querySelector('#modal-add-logo');
   const modalAddFrame = document.querySelector('#modal-add-frame');
   const modalAddText = document.querySelector('#modal-add-text');
+  const modalAddBanners = document.querySelector('#modal-add-banners');
   const modalUploadInput = document.querySelector('#stage-modal-upload-input');
+
+  // Modal selector de Banners de Jugador y Fondos Temáticos
+  const bannersModalBackdrop = document.querySelector('#stage-banners-modal');
+  const bannersModalCloseBtn = document.querySelector('#stage-banners-modal-close');
+  const bannersModalCancelBtn = document.querySelector('#stage-banners-modal-cancel');
 
   // Modal selector de micrófono / dispositivo de audio
   const micModalBackdrop = document.querySelector('#stage-mic-modal');
@@ -202,8 +208,14 @@ export function initStage({ streamBroadcaster, getLocalStream }) {
     return img;
   }
 
-  preloadImage('/assets/aistudio/titulo_8c4f5fbe.png');
-  preloadImage('/assets/aistudio/descarga_5f1f4c5c.jpg');
+  preloadImage('./media/logo-el-tio-mario.png');
+  preloadImage('./media/fondo-escenario-mario.jpg');
+  preloadImage('./media/banner-jugador-amarillo.png');
+  preloadImage('./media/banner-jugador-rojo.png');
+  preloadImage('./media/banner-jugador-verde.png');
+  preloadImage('./media/banner-jugador-celeste.png');
+  preloadImage('./media/banner-jugador-morado.png');
+  preloadImage('./media/banner-jugador-naranja.png');
 
   // Capas iniciales del escenario
   let layers = [
@@ -211,7 +223,7 @@ export function initStage({ streamBroadcaster, getLocalStream }) {
       id: 'layer-welcome-bg',
       name: '🖼️ Fondo del Escenario',
       type: 'image',
-      src: '/assets/aistudio/descarga_5f1f4c5c.jpg',
+      src: './media/fondo-escenario-mario.jpg',
       x: 0,
       y: 0,
       width: 1080,
@@ -229,7 +241,7 @@ export function initStage({ streamBroadcaster, getLocalStream }) {
       id: 'layer-logo',
       name: '🏷️ Logo El Tío Mario',
       type: 'image',
-      src: '/assets/aistudio/titulo_8c4f5fbe.png',
+      src: './media/logo-el-tio-mario.png',
       x: 290,
       y: 80,
       width: 500,
@@ -1287,7 +1299,7 @@ export function initStage({ streamBroadcaster, getLocalStream }) {
         id: `layer-logo-${Date.now()}`,
         name: '🏷️ Logo El Tío Mario',
         type: 'image',
-        src: '/assets/aistudio/titulo_8c4f5fbe.png',
+        src: './media/logo-el-tio-mario.png',
         x: 290,
         y: 80,
         width: 500,
@@ -1315,7 +1327,7 @@ export function initStage({ streamBroadcaster, getLocalStream }) {
         id: `layer-frame-${Date.now()}`,
         name: '✨ Marco Mágico del Tablero',
         type: 'frame',
-        src: '/assets/aistudio/descarga_5f1f4c5c.jpg',
+        src: './media/fondo-escenario-mario.jpg',
         x: 0,
         y: 0,
         width: 1080,
@@ -1368,6 +1380,68 @@ export function initStage({ streamBroadcaster, getLocalStream }) {
       updateOverlay();
     });
   }
+
+  // ============================================================================
+  // OPCIÓN 7: BANNERS DE JUGADOR Y RECURSOS MULTIMEDIA MARIO
+  // ============================================================================
+  function closeBannersModal() {
+    if (bannersModalBackdrop) bannersModalBackdrop.hidden = true;
+  }
+
+  if (modalAddBanners) {
+    modalAddBanners.addEventListener('click', () => {
+      closeSourceModal();
+      if (bannersModalBackdrop) bannersModalBackdrop.hidden = false;
+    });
+  }
+
+  if (bannersModalCloseBtn) bannersModalCloseBtn.addEventListener('click', closeBannersModal);
+  if (bannersModalCancelBtn) bannersModalCancelBtn.addEventListener('click', closeBannersModal);
+  if (bannersModalBackdrop) {
+    bannersModalBackdrop.addEventListener('click', (e) => {
+      if (e.target === bannersModalBackdrop) closeBannersModal();
+    });
+  }
+
+  const BANNER_ASSETS = {
+    amarillo: { name: '🟡 Banner Jugador (Amarillo)', src: './media/banner-jugador-amarillo.png', w: 600, h: 190 },
+    rojo: { name: '🔴 Banner Jugador (Rojo)', src: './media/banner-jugador-rojo.png', w: 600, h: 190 },
+    verde: { name: '🟢 Banner Jugador (Verde)', src: './media/banner-jugador-verde.png', w: 600, h: 190 },
+    celeste: { name: '🔵 Banner Jugador (Celeste)', src: './media/banner-jugador-celeste.png', w: 600, h: 190 },
+    morado: { name: '🟣 Banner Jugador (Morado)', src: './media/banner-jugador-morado.png', w: 600, h: 190 },
+    naranja: { name: '🟠 Banner Jugador (Naranja)', src: './media/banner-jugador-naranja.png', w: 600, h: 190 }
+  };
+
+  document.querySelectorAll('.stage-banner-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const bannerKey = btn.dataset.banner;
+      const info = BANNER_ASSETS[bannerKey];
+      if (!info) return;
+      closeBannersModal();
+
+      const layer = {
+        id: `layer-banner-${bannerKey}-${Date.now()}`,
+        name: info.name,
+        type: 'image',
+        src: info.src,
+        x: Math.round((VIRTUAL_W - info.w) / 2),
+        y: 1550,
+        width: info.w,
+        height: info.h,
+        cropLeft: 0,
+        cropRight: 0,
+        cropTop: 0,
+        cropBottom: 0,
+        zIndex: layers.length + 1,
+        visible: true,
+        locked: false,
+        opacity: 1
+      };
+      layers.push(layer);
+      selectedLayerId = layer.id;
+      updateOverlay();
+    });
+  });
 
   // ============================================================================
   // OPCIÓN 6: AÑADIR MICRÓFONO / DISPOSITIVO DE AUDIO LOCAL
@@ -1540,7 +1614,7 @@ export function initStage({ streamBroadcaster, getLocalStream }) {
           id: 'layer-welcome-bg',
           name: '🖼️ Fondo del Escenario',
           type: 'image',
-          src: '/assets/aistudio/descarga_5f1f4c5c.jpg',
+          src: './media/fondo-escenario-mario.jpg',
           x: 0,
           y: 0,
           width: 1080,
@@ -1558,7 +1632,7 @@ export function initStage({ streamBroadcaster, getLocalStream }) {
           id: 'layer-logo',
           name: '🏷️ Logo El Tío Mario',
           type: 'image',
-          src: '/assets/aistudio/titulo_8c4f5fbe.png',
+          src: './media/logo-el-tio-mario.png',
           x: 290,
           y: 80,
           width: 500,
