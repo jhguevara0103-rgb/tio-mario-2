@@ -142,6 +142,19 @@ function renderChat(messages, isLiveUpdate) {
     }
     authorWrap.append(nameContainer);
 
+    // Distintivo oficial de rol en el chat del cliente (Host Anfitrión / Registrado)
+    const roleBadge = document.createElement('span');
+    if (message.role === 'host') {
+      roleBadge.className = 'chat-badge host';
+      roleBadge.textContent = '👑 ANFITRIÓN';
+    } else if (message.isRegistered || message.role === 'registered') {
+      roleBadge.className = 'chat-badge verified';
+      roleBadge.textContent = '✓ Registrado';
+    }
+    if (roleBadge.textContent) {
+      authorWrap.append(roleBadge);
+    }
+
     const time = document.createElement('time');
     time.dateTime = message.timestamp;
     time.textContent = new Intl.DateTimeFormat('es', { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(new Date(message.timestamp));

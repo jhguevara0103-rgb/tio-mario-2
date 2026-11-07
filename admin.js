@@ -421,9 +421,12 @@ if (quickRegForm) {
 
 // Autenticación de Host y Manejo de Inactividad
 async function unlockHost(session) {
-  if (!session || session.role !== 'host') throw new Error('Esta cuenta no tiene permisos de host.');
+  if (!session || session.role !== 'host') throw new Error('Esta cuenta no tiene permisos de anfitrión.');
   isHost = true;
-  hostSession.textContent = session.user.toUpperCase();
+  sessionStorage.setItem(ADMIN_AUTH_STORAGE_KEY, 'true');
+  localStorage.setItem(ADMIN_AUTH_STORAGE_KEY, 'true');
+
+  hostSession.textContent = (session.user || 'El Tío Mario').toUpperCase();
   hostLogin.hidden = true;
   hostLayout.hidden = false;
   hostPassword.value = '';
@@ -432,10 +435,16 @@ async function unlockHost(session) {
   chatInput.disabled = false;
   chatSend.disabled = false;
   if (hostEmojiPicker) hostEmojiPicker.setEnabled(true);
-  chatStatus.textContent = 'Conectado al chat como host';
+  chatStatus.textContent = 'Conectado como Administrador (Tío Mario)';
 
-  loadAdminParticipants().catch(() => {});
-  loadAdminBlacklist().catch(() => {});
+  // Asegurar que El Tío Mario Studio (Escenario) esté 100% editable para el administrador
+  if (stageController && typeof stageController.setEditable === 'function') {
+    stageController.setEditable(true);
+  }
+
+  // Cargar las secciones con permisos de administrador
+  loadAdminParticipants().catch((err) => console.warn('Error cargando participantes:', err));
+  loadAdminBlacklist().catch((err) => console.warn('Error cargando lista negra:', err));
 
   if (window.Ludito?.setupAdminInactivityMonitor) {
     window.Ludito.setupAdminInactivityMonitor(() => {
@@ -450,31 +459,26 @@ async function unlockHost(session) {
         isHost = false;
         hostLayout.hidden = true;
         hostLogin.hidden = false;
-        hostLoginError.textContent = 'Sesión bloqueada por inactividad. Ingresa la contraseña para continuar.';
+        hostLoginError.textContent = 'Sesión pausada por inactividad. Ingresa la contraseña de anfitrión para reactivar.';
       }
     });
   }
 }
 
 // ============================================================================
-// AUTENTICACIÓN 100% EN EL CLIENTE (COMPATIBLE CON NETLIFY Y DESPLIEGUES ESTÁTICOS)
+// AUTENTICACIÓN COMO ADMINISTRADOR (ONLINE CON TOKEN + COMPATIBLE ESTÁTICO)
 // ============================================================================
 const ADMIN_SECRET_KEY = 'tiomario#2026Admin$*';
 const ADMIN_AUTH_STORAGE_KEY = 'isAdminAuthenticated';
 
 function isClientAdminAuthenticated() {
-  return sessionStorage.getItem(ADMIN_AUTH_STORAGE_KEY) === 'true';
-}
-
-function clientAdminLogin(enteredPassword) {
-  if (enteredPassword === ADMIN_SECRET_KEY) {
-    sessionStorage.setItem(ADMIN_AUTH_STORAGE_KEY, 'true');
-    return { role: 'host', user: 'El Tío Mario' };
-  }
-  throw new Error('Contraseña incorrecta. Inténtalo de nuevo.');
+  return sessionStorage.getItem(ADMIN_AUTH_STORAGE_KEY) === 'true' || localStorage.getItem(ADMIN_AUTH_STORAGE_KEY) === 'true';
 }
 
 function clientAdminLogout() {
+  if (window.Ludito?.logout) {
+    window.Ludito.logout();
+  }
   sessionStorage.removeItem(ADMIN_AUTH_STORAGE_KEY);
   localStorage.removeItem(ADMIN_AUTH_STORAGE_KEY);
   isHost = false;
@@ -488,7 +492,7 @@ function clientAdminLogout() {
 
 // Desbloqueo del modal de inactividad
 if (inactivityUnlockForm) {
-  inactivityUnlockForm.addEventListener('submit', (e) => {
+  inactivityUnlockForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!inactivityPassword) return;
     const pass = inactivityPassword.value.trim();
@@ -498,16 +502,17 @@ if (inactivityUnlockForm) {
     if (inactivityUnlockError) inactivityUnlockError.textContent = 'Verificando…';
 
     try {
-      if (pass === ADMIN_SECRET_KEY) {
-        isHost = true;
-        sessionStorage.setItem(ADMIN_AUTH_STORAGE_KEY, 'true');
-        if (hostInactivityLockOverlay) hostInactivityLockOverlay.hidden = true;
-        inactivityPassword.value = '';
-        if (inactivityUnlockError) inactivityUnlockError.textContent = '';
-        showDbToast('¡Controles desbloqueados con éxito!');
-      } else {
-        throw new Error('Contraseña incorrecta');
+      const session = await window.Ludito.authenticateAdmin(pass);
+      isHost = true;
+      sessionStorage.setItem(ADMIN_AUTH_STORAGE_KEY, 'true');
+      localStorage.setItem(ADMIN_AUTH_STORAGE_KEY, 'true');
+      if (hostInactivityLockOverlay) hostInactivityLockOverlay.hidden = true;
+      inactivityPassword.value = '';
+      if (inactivityUnlockError) inactivityUnlockError.textContent = '';
+      if (stageController && typeof stageController.setEditable === 'function') {
+        stageController.setEditable(true);
       }
+      showDbToast('¡Controles de Administrador reactivados!');
     } catch (err) {
       if (inactivityUnlockError) inactivityUnlockError.textContent = err.message || 'Contraseña incorrecta';
       inactivityPassword.focus();
@@ -517,25 +522,47 @@ if (inactivityUnlockForm) {
   });
 }
 
-// Validación inicial al cargar la página sin peticiones a backend
-if (isClientAdminAuthenticated()) {
-  unlockHost({ role: 'host', user: 'El Tío Mario' }).catch(() => {});
-} else {
-  hostLayout.hidden = true;
-  hostLogin.hidden = false;
-}
+// Validación inicial al cargar la página: verifica sesión activa
+(async () => {
+  try {
+    const session = await window.Ludito.restoreAdminSession();
+    if (session && session.role === 'host') {
+      await unlockHost(session);
+      return;
+    }
+  } catch (_) {}
+
+  if (isClientAdminAuthenticated()) {
+    unlockHost({ role: 'host', user: 'El Tío Mario' }).catch(() => {});
+  } else {
+    hostLayout.hidden = true;
+    hostLogin.hidden = false;
+  }
+})();
 
 // Formulario principal de Login de Host
-hostLoginForm.addEventListener('submit', (event) => {
+hostLoginForm.addEventListener('submit', async (event) => {
   event.preventDefault();
   hostLoginError.textContent = '';
-  const password = hostPassword.value;
-  try {
-    const session = clientAdminLogin(password);
-    unlockHost(session);
-  } catch (error) {
-    hostLoginError.textContent = error.message;
+  const password = hostPassword.value.trim();
+  if (!password) {
     hostPassword.focus();
+    return;
+  }
+
+  const submitBtn = hostLoginForm.querySelector('button[type="submit"]');
+  if (submitBtn) submitBtn.disabled = true;
+  hostLoginError.textContent = 'Verificando contraseña de administrador…';
+
+  try {
+    const session = await window.Ludito.authenticateAdmin(password);
+    await unlockHost(session);
+    hostLoginError.textContent = '';
+  } catch (error) {
+    hostLoginError.textContent = error.message || 'Contraseña incorrecta. Inténtalo de nuevo.';
+    hostPassword.focus();
+  } finally {
+    if (submitBtn) submitBtn.disabled = false;
   }
 });
 
@@ -658,8 +685,9 @@ function switchConsoleTab(viewName) {
   panelWhitelist.hidden = !isWhitelist;
   if (panelBlacklist) panelBlacklist.hidden = !isBlacklist;
 
+  // El escenario SIEMPRE permanece editable para el administrador autenticado
   if (stageController && typeof stageController.setEditable === 'function') {
-    stageController.setEditable(isLayers);
+    stageController.setEditable(true);
   }
 
   if (isWhitelist) {
